@@ -1,0 +1,29 @@
+{% extends 'shared/baseIndex.html' %}
+{% load static %}
+
+{% block title %}Home{% endblock %}
+
+{% block brand %}
+<a href="{% url 'home' %}" class="navbar-brand">
+    <img class="img-fluid d-block mx-auto" style="max-height: 5rem;" src="{% static '/images/Logo.png' %}" alt="Logo">
+</a>
+{% endblock %}
+
+{% block navitems %}
+    <li class="nav-item">
+        <a href="{% url 'home' %}" class="nav-link">Inicio</a>
+    </li>
+    <li class="nav-item">
+        <a href="{% url 'Catalog' %}" class="nav-link">Catalogo</a>
+    </li>
+    <li class="nav-item">
+        <a href="{% url 'About' %}" class="nav-link">Acerca de</a>
+    </li>
+    <li class="nav-item">
+        <a href="{% url 'FAQ' %}" class="nav-link">FAQ</a>
+    </li>
+{% endblock %}
+
+{% block content %}
+    <h1>Contenido Destacado</h1>
+{% endblock %}

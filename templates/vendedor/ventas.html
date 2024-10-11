@@ -1,0 +1,94 @@
+{% extends 'shared/baseIndex.html' %}
+{% load static %}
+
+{% block title %}Ventas{% endblock %}
+
+{% block brand %}
+<a href="{% url 'VenHome' %}" class="navbar-brand">
+    <img class="img-fluid d-block mx-auto" style="max-height: 5rem;" src="{% static '/images/Logo.png' %}" alt="Logo">
+</a>
+{% endblock %}
+
+{% block navitems %}
+<li class="nav-item">
+    <a href="{% url 'VenHome' %}" class="nav-link">Inicio</a>
+</li>
+<li class="nav-item">
+    <a href="{% url 'Ventas' %}" class="nav-link">Gestion Venta</a>
+</li>
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="row mt-3">
+            <h4 class="h4" style="border-bottom: solid;">Ventas Nuevas</h4>
+            <form action="" method="POST">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-3">
+                        <label for="codigo" class="form-label">Codigo</label>
+                        <input type="number" name="codigo" id="codigo" class="form-control">
+                    </div>
+                    <div class="col-3">
+                        <label for="cantidad" class="form-label">Cantidad</label>
+                        <input type="number" name="cantidad" id="cantidad" class="form-control">
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary mt-3">Agregar Carro</button>
+            </form>
+            <div class="row mt-3">
+                <h5 class="h5" style="border-bottom: solid;">En el carro actual</h5>
+                <form action="" method="POST">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Codigo</th>
+                                <th>Producto</th>
+                                <th>Cantidad</th>
+                                <th>Precio Unitario</th>
+                                <th>Precio Total</th>
+                                <th>Accion</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Iterar Carro de Compras -->
+                            <!-- 
+                                La logica de esto es que esta tabla se llena con una lista llamada Carro de Compras
+                                Luego en las views se crea un objeto de clase venta con la variable total sin rellenar
+                                Mediante un for se iteran los objetos de esta tabla en las vistas y se suma el total de cada producto a una variable global
+                                Luego que en las vistas se itere toda la lista se realiza la venta de verdad tomando en producto la lista de productos que se itero y sus valores de objeto
+                                Y la variable global con el valor total de venta
+                            -->
+
+                             <!-- <td>
+                                <input type="hidden" name="codigo" value="#">
+                                <input type="hidden" name="cantidad" value="#">
+                                <input type="hidden" name="precioTotal" value="#">
+                             </td> -->
+                        </tbody>
+                    </table>
+                    <button type="submit" class="btn btn-primary">Confirmar Compra</button>
+                </form>
+                
+            </div>
+        </div>
+        <div class="row mt-3">
+            <h4 class="h4" style="border-bottom: solid;">Historial de Ventas</h4>
+            <div class="col mt-3">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Nro</th>
+                            <th>Productos</th>
+                            <th>Precio</th>
+                            <th>Accion</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Iterar productos en BD -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}

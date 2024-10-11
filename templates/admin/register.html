@@ -1,0 +1,93 @@
+{% extends 'shared/baseIndex.html' %}
+{% load static %}
+
+{% block title %}Registro{% endblock %}
+
+{% block brand %}
+<a href="{% url 'AdminHome' %}" class="navbar-brand">
+    <img class="img-fluid d-block mx-auto" style="max-height: 5rem;" src="{% static '/images/Logo.png' %}" alt="Logo">
+</a>
+{% endblock %}
+
+{% block navitems %}
+<li class="nav-item">
+    <a href="{% url 'AdminHome' %}" class="nav-link">Inicio</a>
+</li>
+<li class="nav-item">
+    <a href="{% url 'Trabajadores' %}" class="nav-link">Gestion de Trabajdores</a>
+</li>
+<li class="nav-item">
+    <a href="{% url 'Reportes' %}" class="nav-link">Reportes</a>
+</li>
+<li class="nav-item">
+    <a href="{% url 'Config' %}" class="nav-link">Configuracion tienda</a>
+</li>
+<li class="nav-item">
+    <a href="{% url 'Register' %}" class="nav-link">Ingreso de Usuarios</a>
+</li>
+{% endblock %}
+
+{% block content %}
+    <div class="container d-flex align-items-center justify-content-center" style="height: 70vh;">
+        <div class="card p-4 shadow" style="max-width: 32rem;width: 100%;">
+            <!-- Configurar metodo POST para este FORM -->
+            <h1 class="card-title text-center">Registro</h1>
+            <form action="">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-6 mt-3">
+                        <!-- Falta definir el maximo de caracteres -->
+                        <label for="nombre" class="form-label">Nombre</label>
+                        <input type="text" id="nombre" name="nombre" class="form-control" placeholder="Juan">
+                    </div>
+    
+                    <div class="col-6 mt-3">
+                        <!-- Falta definir el maximo de caracteres -->
+                        <label for="apellido" class="form-label">Apellido</label>
+                        <input type="text" id="apellido" name="apellido" class="form-control" placeholder="Peralta">
+                    </div>
+                </div>
+                <div class="form-group mt-3">
+                    <label for="correo" class="form-label">Correo</label>
+                    <!-- Falta definir el maximo de caracteres -->
+                    <div class="input-group">
+                        <input 
+                        type="text" 
+                        class="form-control" 
+                        id="email" 
+                        name="email" 
+                        placeholder="peralta.javier02" 
+                        aria-label="correo" 
+                        aria-describedby="basic-addon2"
+                        >
+                        <span class="input-group-text" id="basic-addon2">@nufra.com</span>
+                    </div>
+                </div>
+
+                <div class="form-group mt-3">
+                    <label for="rol" class="form-label">Rol</label>
+                    <select name="rol" id="rol" class="form-select">
+                        <option value="-1">--Seleccione un Rol--</option>
+                        <!-- Obtener los roles de la BD para cargar esto -->
+                    </select>
+                </div>
+
+                <div class="row">
+                    <div class="col-6 mt-2">
+                        <!-- Falta definir el maximo de caracteres -->
+                        <label for="password" class="form-label">Contraseña</label>
+                        <input type="password" name="password" class="form-control">
+                    </div>
+    
+                    <div class="col-6 mt-2 mb-3">
+                        <!-- Falta definir el maximo de caracteres -->
+                        <label for="password" class="form-label">Confirmar Contraseña</label>
+                        <input type="password" name="password" class="form-control">
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-secondary w-100">Registrar</button>
+                
+            </form>
+        </div>
+    </div>
+{% endblock %}

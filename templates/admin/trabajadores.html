@@ -1,0 +1,54 @@
+{% extends 'shared/baseIndex.html' %}
+{% load static %}
+
+{% block title %}Trabajadores{% endblock %}
+
+{% block brand %}
+<a href="{% url 'AdminHome' %}" class="navbar-brand">
+    <img class="img-fluid d-block mx-auto" style="max-height: 5rem;" src="{% static '/images/Logo.png' %}" alt="Logo">
+</a>
+{% endblock %}
+
+{% block navitems %}
+<li class="nav-item">
+    <a href="{% url 'AdminHome' %}" class="nav-link">Inicio</a>
+</li>
+<li class="nav-item">
+    <a href="{% url 'Trabajadores' %}" class="nav-link">Gestion de Trabajdores</a>
+</li>
+<li class="nav-item">
+    <a href="{% url 'Reportes' %}" class="nav-link">Reportes</a>
+</li>
+<li class="nav-item">
+    <a href="{% url 'Config' %}" class="nav-link">Configuracion tienda</a>
+</li>
+<li class="nav-item">
+    <a href="{% url 'Register' %}" class="nav-link">Ingreso de Usuarios</a>
+</li>
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-12 mt-3">
+                <h4 class="h4" style="border-bottom: solid;">Lista trabajadores</h4>
+            </div>
+            <div class="col-12 mt-3">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Rol</th>
+                            <th>Nombre</th>
+                            <th>Apellido</th>
+                            <th>Correo</th>
+                            <th>Accion</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Insertar datos -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}

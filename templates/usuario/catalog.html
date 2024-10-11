@@ -1,0 +1,47 @@
+{% extends 'shared/baseIndex.html' %}
+{% load static %}
+
+{% block title %}Catalogo{% endblock %}
+
+{% block brand %}
+<a href="{% url 'home' %}" class="navbar-brand">
+    <img class="img-fluid d-block mx-auto" style="max-height: 5rem;" src="{% static '/images/Logo.png' %}" alt="Logo">
+</a>
+{% endblock %}
+
+{% block navitems %}
+    <li class="nav-item">
+        <a href="{% url 'home' %}" class="nav-link">Inicio</a>
+    </li>
+    <li class="nav-item">
+        <a href="{% url 'Catalog' %}" class="nav-link">Catalogo</a>
+    </li>
+    <li class="nav-item">
+        <a href="{% url 'About' %}" class="nav-link">Acerca de</a>
+    </li>
+    <li class="nav-item">
+        <a href="{% url 'FAQ' %}" class="nav-link">FAQ</a>
+    </li>
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h1>Catalogo</h1>
+        <!-- Todo esto se debe repetir por medio de un for en base a las categorias de productos en BD -->
+        <div class="row">
+            <!-- El nombre del texto se debe cambiar por el de la categoria de esa iteracion del for -->
+            <h4 style="border-bottom: solid;">Confites</h1>
+            <!-- Hacer un for para cargar esto en base a productos en BD -->
+            <div class="scrollable-cards">
+                <div class="card px-1 shadow">
+                    <div class="card-body">
+                        <a href="#">
+                            <!-- Configurar la imagen y el nombre alterno en bd -->
+                            <img src="#" alt="#">
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

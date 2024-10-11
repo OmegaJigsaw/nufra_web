@@ -1,0 +1,29 @@
+{% extends 'shared/baseIndex.html' %}
+{% load static %}
+
+{% block title %}Home{% endblock %}
+
+{% block brand %}
+<a href="{% url 'SupHome' %}" class="navbar-brand">
+    <img class="img-fluid d-block mx-auto" style="max-height: 5rem;" src="{% static '/images/Logo.png' %}" alt="Logo">
+</a>
+{% endblock %}
+
+{% block navitems %}
+    <li class="nav-item">
+        <a href="{% url 'SupHome' %}" class="nav-link">Inicio</a>
+    </li>
+    <li class="nav-item">
+        <a href="{% url 'SupPanel' %}" class="nav-link">Panel de Control</a>
+    </li>
+    <li class="nav-item">
+        <a href="{% url 'SupInvent' %}" class="nav-link">Gestion de Inventario</a>
+    </li>
+    <li class="nav-item">
+        <a href="{% url 'SupPersonal' %}" class="nav-link">Gestion Personal</a>
+    </li>
+{% endblock %}
+
+{% block content %}
+    <h1>Contenido Destacado Supervisor</h1>
+{% endblock %}
