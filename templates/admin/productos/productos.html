@@ -1,0 +1,85 @@
+{% extends 'shared/baseIndex.html' %}
+{% load static %}
+
+{% block title %}Configuraciones{% endblock %}
+
+{% block brand %}
+<a href="{% url 'AdminHome' %}" class="navbar-brand">
+    <img class="img-fluid d-block mx-auto" style="max-height: 5rem;" src="{% static '/images/Logo.png' %}" alt="Logo">
+</a>
+{% endblock %}
+
+{% block navitems %}
+<li class="nav-item">
+    <a href="{% url 'AdminHome' %}" class="nav-link">Inicio</a>
+</li>
+<li class="nav-item">
+    <a href="{% url 'Trabajadores' %}" class="nav-link">Gestion de Trabajdores</a>
+</li>
+<li class="nav-item">
+    <a href="{% url 'Reportes' %}" class="nav-link">Reportes</a>
+</li>
+<li class="nav-item">
+    <a href="{% url 'Config' %}" class="nav-link">Configuracion Tienda</a>
+</li>
+<li class="nav-item">
+    <a href="{% url 'Register' %}" class="nav-link">Ingreso de Usuarios</a>
+</li>
+{% endblock %}
+
+{% block content %}
+    <!-- La logica de este template es asi , los iconos no llevan a un template nuevo -->
+    <!-- En su lugar deriban o a una funcion nueva en las views o la misma view de este template -->
+    <!-- Y en esta view se consulta si el dato que llego es del icono correspondiente -->
+    <!-- Y el resto del codigo se basa en generar las sub-vistas de cada opcion y se muestra una o la otra por medio de un if -->
+    <div class="container">
+        <div class="row">
+            <h4 class="h4" style="border-bottom: solid;">Productos</h4>
+            <div class="table-responsibe mt-3">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Categoria</th>
+                            <th>Descripcion</th>
+                            <th>Stock</th>
+                            <th>Precio Unitario</th>
+                            <th>Proveedor</th>
+                            <th>Fecha Ingreso</th>
+                            <th>Disponible</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody">
+                        {% if not productos %}
+                        <tr id="emptyRow">
+                          <td colspan="9" class="text-center">
+                            <a href="{% url 'addProducto' %}" class="btn btn-primary">+</a>
+                          </td>
+                        </tr>
+                        {% else %}
+                        {% for i in productos %}
+                        <tr>
+                            <td>{{i.nombre}}</td>
+                            <td>{{i.categoria}}</td>
+                            <td>{{i.descripcion}}</td>
+                            <td>{{i.stock}}</td>
+                            <td>{{i.precio_unitario}}</td>
+                            <td>{{i.proveedor}}</td>
+                            <td>{{i.fecha_ingreso}}</td>
+                            <td>{{i.disponible}}</td>
+                            <td>
+                                <a href="#" class="btn btn-primary"></a>
+                                <a href="#" class="btn btn-primary"></a>
+                                <a href="#" class="btn btn-primary"></a>
+                                <a href="#" class="btn btn-primary"></a>
+                            </td> 
+                        </tr>
+                        {% endfor %}
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>    
+    </div>
+{% endblock %}

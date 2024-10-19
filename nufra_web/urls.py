@@ -17,6 +17,12 @@ urlpatterns = [
     path('home/admin/trabajadores', vistas.RenderTrabajadores, name='Trabajadores'),
     path('home/admin/reportes', vistas.RenderReport, name='Reportes'),
     path('home/admin/configuraciones', vistas.RenderConfig, name='Config'),
+    #Proveedor
+    path('home/admin/config/proveedores', vistas.RenderProveedores, name='proveedores'),
+    path('home/admin/config/add-proveedor', vistas.AddProveedor, name='addProveedor'),
+    #Producto
+    path('home/admin/config/productos', vistas.RenderProducto, name='productos'),
+    path('home/admin/config/add-producto', vistas.AddProducto, name='addProducto'),
     # Supervisor
     path('home/supervisor/', vistas.RenderSupHome, name='SupHome'),
     path('home/supervisor/panel', vistas.RenderPanel, name='SupPanel'),

@@ -1,7 +1,7 @@
 {% extends 'shared/baseIndex.html' %}
 {% load static %}
 
-{% block title %}Home{% endblock %}
+{% block title %}Configuraciones{% endblock %}
 
 {% block brand %}
 <a href="{% url 'AdminHome' %}" class="navbar-brand">
@@ -20,7 +20,7 @@
     <a href="{% url 'Reportes' %}" class="nav-link">Reportes</a>
 </li>
 <li class="nav-item">
-    <a href="{% url 'Config' %}" class="nav-link">Configuracion tienda</a>
+    <a href="{% url 'Config' %}" class="nav-link">Configuracion Tienda</a>
 </li>
 <li class="nav-item">
     <a href="{% url 'Register' %}" class="nav-link">Ingreso de Usuarios</a>
@@ -28,6 +28,23 @@
 {% endblock %}
 
 {% block content %}
-    <h1>Contenido Admin</h1>
-    <!-- Posiblemente tablas con datos importantes -->
+    <div class="container">
+        <div class="row">
+            <h4 class="h4" style="border-bottom: solid;">Actividades</h4>
+            <div class="col-2 mt-3 mx-auto">
+                <a href="{% url 'productos' %}">
+                    Icono
+                    <!-- <i></i> -->
+                </a>
+                <h5 class="h5">Productos</h5>
+            </div>
+            <div class="col-2 mt-3 mx-auto">
+                <a href="{% url 'proveedores' %}">
+                    Icono
+                    <!-- <i></i> -->
+                </a>
+                <h5 class="h5">Proveedores</h5>
+            </div>
+        </div>
+    </div>
 {% endblock %}

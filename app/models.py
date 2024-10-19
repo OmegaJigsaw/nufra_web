@@ -6,17 +6,14 @@ from django.contrib.auth.hashers import make_password, check_password
 # snake_case para los Atributos de Clases
 
 # Tabla General de Usuarios
-# AbstractUser es una clase prehecha que tiene cosas montadas, sirve para manejar herencia
-# El username(150 char), password(128 char), first_name(150 char), last_name(150 char) vienen incluidas 
-# Al igual que algunos metodos (setter & getter) y atributos solo se llama a la hora de crear el objeto
-
 class Roles(models.Model):
     nombre = models.CharField(max_length=50)
 
 class Usuario(models.Model):
     nombre = models.CharField(max_length=150, default="")
     apellido = models.CharField(max_length=150, default="")
-    username = models.CharField(max_length=50, unique=True)
+    # El Username es la parte principal del correo lo que esta antes del @
+    username = models.CharField(max_length=255, unique=True)
     password = models.CharField(max_length=128)
     estado = models.CharField(max_length=30)
     rol = models.ForeignKey(Roles, on_delete=models.CASCADE)
@@ -34,17 +31,17 @@ class Administrador(Usuario):
     correo = models.EmailField(max_length=255)
     telefono = models.CharField(max_length=16)
 
-class ProductoProveedor(models.Model):
-    nombre = models.CharField(max_length=50)
-
 class Proveedor(models.Model):
+    nombre = models.CharField(max_length=100, default="")
     correo = models.EmailField(max_length=255) 
     telefono = models.CharField(max_length=16)
-    productos = models.ManyToManyField(ProductoProveedor)
+
+class CategoriaProducto(models.Model):
+    nombre = models.CharField(max_length=50)
 
 class Producto(models.Model):
     nombre = models.CharField(max_length=150)
-    stock = models.IntegerField(default=0)
+    categoria = models.ForeignKey(CategoriaProducto, on_delete=models.DO_NOTHING)
     descripcion = models.TextField()
     fecha_ingreso = models.DateField()
     proveedor = models.ForeignKey(Proveedor, on_delete=models.DO_NOTHING)
