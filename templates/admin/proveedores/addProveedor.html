@@ -12,32 +12,54 @@
 {% block content %}
     <div class="container d-flex align-items-center justify-content-center" style="height: 70vh;">
         <div class="card p-4 shadow" style="max-width: 32rem;width: 100%;">
-            <form action="">
+            <form action="" method="POST">
                 <h1 class="card-title text-center">Añadir Proveedor</h1>
                 {% csrf_token %}
                 <div class="form-group mt-3">
                     <label for="nombre" class="form-label">Nombre</label>
                     <input type="text" id="nombre" name="nombre" class="form-control" placeholder="Costa" maxlength="100">
+                    {% if errores.name_empty %}
+                    <span class="text-danger">{{errores.name_empty}}</span>
+                    {% endif %}
                 </div>
-                <div class="form-group mt-3">
-                    <label for="correo" class="form-label">Correo</label>
-                    <input type="text" id="correo" name="correo" class="form-control" placeholder="example@example.dom" maxlength="255">
+                <div class="form-group mt-3" for="correo">
+                    <label for="">Correo</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="caredenas_adrian" aria-label="correo" name="correo" id="correo">
+                        <span class="input-group-text">@</span>
+                        <input type="text" class="form-control" placeholder="costa.cl" aria-label="dominio" name="dominio", id="correo">
+                    </div>
+                    <div class="col">
+                        <div class="col">
+                            {% if errores.email_empty %}
+                            <span class="text-danger">{{errores.email_empty}}</span>
+                            {% elif errores.email_char_error %}
+                            <span class="text-danger">{{errores.email_char_error}}</span>
+                            {% endif %}
+                        </div>
+                        <div class="col">
+                            {% if errores.dom_empty %}
+                            <span class="text-danger">{{errores.dom_empty}}</span>
+                            {% elif errores.dom_char_error %}
+                            <span class="text-danger">{{errores.dom_char_error}}</span>
+                            {% endif %}
+                        </div>
+                    </div>
                 </div>
                 <div class="form-group mt-3">
                     <label for="telefono" class="form-label">Telefono</label>
                     <input type="text" id="telefono" name="telefono" class="form-control" maxlength="16">
-                </div>
-                <div class="form-group">
-                    {% for i in productosProveedor %}
-                        <!-- DEBATIR -->
-                    {% endfor %}
+                    {% if errores.phone_empty %}
+                    <span class="text-danger">{{errores.phone_empty}}</span>
+                    {% elif errores.phone_char_error %}
+                    <span class="text-danger">{{errores.phone_char_error}}</span>
+                    {% endif %}
                 </div>
             
                 <div class="col mt-3">
-                    <a href="{% url 'Config' %}" class="btn btn-secondary">Volver</a>
+                    <a href="{% url 'proveedores' %}" class="btn btn-secondary">Volver</a>
                     <button type="submit" class="btn btn-primary w-25">Añadir</button>
                 </div>
-                
             </form>
         </div>
     </div>

@@ -58,6 +58,7 @@
                             <th>Nombre</th>
                             <th>Categoria</th>
                             <th>Descripcion</th>
+                            <th>Stock</th>
                             <th>Precio Unitario</th>
                             <th>Proveedor</th>
                             <th>Fecha Ingreso</th>
@@ -76,12 +77,13 @@
                         {% for i in productos %}
                         <tr>
                             <td>{{i.nombre}}</td>
-                            <td>{{i.categoria.nombre}}</td>
+                            <td>{{i.categoria}}</td>
                             <td>{{i.descripcion}}</td>
+                            <td>{{i.stock}}</td>
                             <td>{{i.precio_unitario}}</td>
-                            <td>{{i.proveedor.nombre}}</td>
+                            <td>{{i.proveedor}}</td>
                             <td>{{i.fecha_ingreso}}</td>
-                            <td>{% if i.disponible %}Disponible{% else %}No Disponible{% endif %}</td>
+                            <td>{{i.disponible}}</td>
                             <td>
                                 <a href="#" class="btn btn-primary"></a>
                                 <a href="#" class="btn btn-primary"></a>

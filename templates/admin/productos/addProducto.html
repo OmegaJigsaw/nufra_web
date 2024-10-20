@@ -12,12 +12,15 @@
 {% block content %}
     <div class="container d-flex align-items-center justify-content-center" style="height: 70vh;">
         <div class="card p-4 shadow" style="max-width: 32rem;width: 100%;">
-            <form action="">
+            <form action="" method="POST">
                 <h1 class="card-title text-center">Añadir Producto</h1>
                 {% csrf_token %}
                 <div class="form-group mt-3">
                     <label for="nombre" class="form-label">Nombre</label>
                     <input type="text" id="nombre" name="nombre" class="form-control" placeholder="Galletas" maxlength="150">
+                    {% if errores.name_empty %}
+                    <span class="text-danger">{{errores.name_empty}}</span>
+                    {% endif %}
                 </div>
                 <div class="row mt-3">
                     <div class="col-6">  
@@ -28,6 +31,9 @@
                             <option value="{{i.id}}">{{i.nombre}}</option>
                             {% endfor %}
                         </select>
+                        {% if errores.cate_default %}
+                        <span class="text-danger">{{errores.cate_default}}</span>
+                        {% endif %}
                     </div>
                     <div class="col-6">
                         <label for="proveedor" class="form-label">Proveedor</label>
@@ -37,22 +43,31 @@
                             <option value="{{i.id}}">{{i.nombre}}</option>
                             {% endfor %}
                         </select>
+                        {% if errores.pro_default %}
+                        <span class="text-danger">{{errores.pro_default}}</span>
+                        {% endif %}
                     </div>
                 </div>
-                
                 <div class="form-group mt-3">
                     <label for="descripcion" class="form-label">Descripcion</label>
                     <textarea class="form-control" rows="4" name="descripcion" id="descripcion" placeholder="Chocolate"></textarea>
+                    {% if errores.des_empty %}
+                    <span class="text-danger">{{errores.des_empty}}</span>
+                    {% endif %}
                 </div>
                 
                 <div class="row mt-3">
                     <div class="col-6">
                         <label for="precio" class="form-label">Precio Unitario</label>
                         <input type="number" id="precio" name="precio" class="form-control" min="0">
+                        {% if errores.precio_empty %}
+                        <span class="text-danger">{{errores.precio_empty}}</span>
+                        {% endif %}
                     </div>
                     <div class="col-6">
                         <label for="fecha" class="form-label">Fecha Ingreso</label>
                         <input type="date" id="fecha" name="fecha" class="form-control">
+                        <!-- MANEJAR EXCEPCIONES DE ESTO (INVESTIGAR) -->
                     </div>
                 </div>
             
