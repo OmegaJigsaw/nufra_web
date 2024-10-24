@@ -1,7 +1,7 @@
 {% extends 'shared/base.html' %}
 {% load static %}
 
-{% block title %}Agregar Producto{% endblock %}
+{% block title %}Edicion{% endblock %}
 
 {% block header %}
     <div class="container-fluid text-center py-4" style="background-color: #4A4063;">
@@ -13,17 +13,13 @@
     <div class="container d-flex align-items-center justify-content-center" style="height: 70vh;">
         <div class="card p-4 shadow" style="max-width: 32rem;width: 100%;">
             <form action="" method="POST">
-                <h1 class="card-title text-center">Añadir Producto</h1>
+                <h1 class="card-title text-center">Editar Producto</h1>
                 {% csrf_token %}
                 <div class="form-group mt-3">
                     <label for="nombre" class="form-label">Nombre</label>
                     <input type="text" id="nombre" name="nombre" class="form-control" placeholder="Galletas" maxlength="150">
                     {% if errores.name_empty %}
                     <span class="text-danger">{{errores.name_empty}}</span>
-                    {% elif errores.name_max_char %}
-                    <span class="text-danger">{{errores.name_max_char}}</span>
-                    {% elif errores.name_numerico %}
-                    <span class="text-danger">{{errores.name_numerico}}</span>
                     {% endif %}
                 </div>
                 <div class="row mt-3">
@@ -59,33 +55,27 @@
                     <span class="text-danger">{{errores.des_empty}}</span>
                     {% endif %}
                 </div>
+                
                 <div class="row mt-3">
                     <div class="col-6">
                         <label for="precio" class="form-label">Precio Unitario</label>
                         <input type="number" id="precio" name="precio" class="form-control" min="0">
-                        {% if errores.price_empty %}
-                        <span class="text-danger">{{errores.price_empty}}</span>
-                        {% elif errores.price_char_error %}
-                        <span class="text-danger">{{errores.price_char_error}}</span>
+                        {% if errores.precio_empty %}
+                        <span class="text-danger">{{errores.precio_empty}}</span>
                         {% endif %}
                     </div>
                     <div class="col-6">
                         <label for="fecha" class="form-label">Fecha Ingreso</label>
                         <input type="date" id="fecha" name="fecha" class="form-control">
-                        {% if errores.date_empty %}
-                        <span class="text-danger">{{errores.date_empty}}</span>
-                        {% elif errores.future_date %}
-                        <span class="text-danger">{{errores.future_date}}</span>
-                        {% elif errores.invalid_date %}
-                        <span class="text-danger">{{errores.invalid_date}}</span>
-                        {% endif %}
+                        <!-- MANEJAR EXCEPCIONES DE ESTO (INVESTIGAR) -->
                     </div>
                 </div>
             
                 <div class="col mt-3">
-                    <a href="{% url 'productos' %}" class="btn btn-secondary">Volver</a>
+                    <a href="{% url 'Config' %}" class="btn btn-secondary">Volver</a>
                     <button type="submit" class="btn btn-primary w-25">Añadir</button>
                 </div>
+                
             </form>
         </div>
     </div>

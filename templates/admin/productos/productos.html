@@ -28,10 +28,6 @@
 {% endblock %}
 
 {% block content %}
-    <!-- La logica de este template es asi , los iconos no llevan a un template nuevo -->
-    <!-- En su lugar deriban o a una funcion nueva en las views o la misma view de este template -->
-    <!-- Y en esta view se consulta si el dato que llego es del icono correspondiente -->
-    <!-- Y el resto del codigo se basa en generar las sub-vistas de cada opcion y se muestra una o la otra por medio de un if -->
     <div class="container">
         <div class="row">
             <h4 class="h4" style="border-bottom: solid;">Productos</h4>
@@ -40,6 +36,8 @@
                     <div class="row">
                         <div class="col text-start">
                             <a href="{% url 'Config' %}" class="btn btn-primary mx-auto">volver</a>
+                            <!-- CREAR CRUD DE CATEGORIAS | AGREGAR TEMPLATES DENTRO DE EL DIRECTORIO CATEGORIAS -->
+                            <a href="#" class="btn btn-primary">Categorias</a>
                         </div>
                         <div class="col text-end">
                             <a href="{% url 'addProducto' %}" class="btn btn-primary mx-auto">+</a>
@@ -49,6 +47,7 @@
                 <div class="row">
                     <div class="col text-start">
                         <a href="{% url 'Config' %}" class="btn btn-primary">Volver</a>
+                        <a href="#" class="btn btn-primary">Categorias</a>
                     </div>
                 </div>
                 {% endif %}
@@ -61,7 +60,7 @@
                             <th>Precio Unitario</th>
                             <th>Proveedor</th>
                             <th>Fecha Ingreso</th>
-                            <th>Disponible</th>
+                            <th>Disponibilidad</th>
                             <th>Acciones</th>
                         </tr>
                     </thead>
@@ -83,10 +82,9 @@
                             <td>{{i.fecha_ingreso}}</td>
                             <td>{% if i.disponible %}Disponible{% else %}No Disponible{% endif %}</td>
                             <td>
-                                <a href="#" class="btn btn-primary"></a>
-                                <a href="#" class="btn btn-primary"></a>
-                                <a href="#" class="btn btn-primary"></a>
-                                <a href="#" class="btn btn-primary"></a>
+                                <!-- REMPLAZAR TEXTO POR ICONOS -->
+                                <a href="#" class="btn btn-primary">Editar</a>
+                                <a href="{% url 'blockProducto' i.id %}" class="btn btn-danger">(/)</a>
                             </td> 
                         </tr>
                         {% endfor %}

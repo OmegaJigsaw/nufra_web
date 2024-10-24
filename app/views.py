@@ -1,4 +1,6 @@
-from django.shortcuts import redirect, render
+import datetime
+from django.http import HttpResponse
+from django.shortcuts import get_object_or_404, redirect, render
 from .models import Producto, CategoriaProducto, Proveedor, Inventario
 # CamelCase Para las vistas
 # snake_case para lo interno
@@ -141,26 +143,59 @@ def AddProducto(request):
         precio = request.POST.get('precio')
         fecha = request.POST.get('fecha')
 
+        # Validacion Nombre
         if nombre.strip() == "":
-            has_error['name_empty'] = 'El Campo NOMBRE no Puede Estar Vacio'
+            has_error['name_empty'] = 'El Campo NOMBRE NO Puede Estar Vacio'
+        elif len(nombre) > 150:
+            has_error['name_max_char'] = 'Se ha Superado el Limite de Caracteres, MAXIMO Permitido: 150'
+        elif nombre.isdigit():
+            has_error['char_numerico'] = 'El Campo NOMBRE NO Puede ser Solamente NUMERICO'
+        else:
+            nombre = nombre.title()
 
+        # Validacion Categoria
         if categoria == '-1':
-            has_error['cate_default'] = 'El Campo CATEGORIA Debe ser DISTINTO al por Defecto'
-
+            has_error['cate_default'] = 'El Campo CATEGORIA Debe ser DISTINTO al PREDETERMINADO'
+        
+        # Validacion Proveedor
         if proveedor == '-1':
-            has_error['pro_default'] = 'El Campo Proveedor Debe ser DISTINTO al por Defecto'
+            has_error['pro_default'] = 'El Campo Proveedor Debe ser DISTINTO al PREDETERMINADO'
 
+        # Validacion Descripcion
         if descripcion.strip() == "":
-            has_error['des_empty'] = 'El Campo Descripcion no Puede Estar Vacio'
+            has_error['des_empty'] = 'El Campo Descripcion NO Puede Estar Vacio'
+        else:
+            descripcion = descripcion.capitalize()
 
+        # Validacion Precio
         if precio.strip() == "":
-            has_error['precio_empty'] = 'El Campo Precio no Puede Estar Vacio'
+            has_error['price_empty'] = 'El Campo Precio NO Puede Estar Vacio'
+        else:
+            try:
+                precio = float(precio)
+            except ValueError:
+                has_error['price_char_error'] = 'El PRECIO Debe ser un Número Válido.'
+        
+        # Validacion Fecha
+        if not fecha:
+            has_error['date_empty'] = 'La FECHA NO Puede Esta VACIA'
+        else:
+            try:
+                fecha_valida = datetime.datetime.strptime(fecha, "%Y-%m-%d").date()
+                if fecha_valida > datetime.date.today():
+                    has_error['future_date'] = 'La Fecha de Ingreso NO Puede Estar en el FUTURO'
+            except ValueError:
+                has_error['invalid_date'] = 'Fecha Ingresada Invalida'
+
+        # Validar Existencia
+        if Producto.objects.filter(nombre=nombre).exists():
+                has_error['duplicado'] = 'Producto ya existente'
 
         if not has_error:
             producto = Producto(
                 nombre=nombre,
-                categoria=CategoriaProducto.objects.get(id=categoria),
-                proveedor=Proveedor.objects.get(id=proveedor),
+                categoria=get_object_or_404(CategoriaProducto, id=categoria),
+                proveedor=get_object_or_404(Proveedor, id=proveedor),
                 descripcion=descripcion,
                 precio_unitario=precio,
                 fecha_ingreso=fecha
@@ -173,6 +208,30 @@ def AddProducto(request):
     elif request.method == 'GET':
         productos = Producto.objects.all()
         return render(request, 'admin/productos/addProducto.html', {'categorias': categorias, 'proveedores': proveedores})
+
+def EditProducto(request):
+    pass
+
+
+
+# Manejo de Producto / Para no eliminar registros
+def BlockProducto(request, id):
+    if request.method == 'GET':
+        producto = Producto.objects.get(id=id)
+        if producto.disponible:
+            try:
+                producto.disponible = False
+                producto.save()
+                return redirect('productos')
+            except:
+                return HttpResponse(f"Error al deshabilitar el producto: {producto.nombre}", status=404)
+        else:
+            try:
+                producto.disponible = True
+                producto.save()
+                return redirect('productos')
+            except:
+                return HttpResponse("Error al habilitar el producto: {}".format(producto.nombre), status=404)        
 
 # Supervisor
 def RenderSupHome(request):

@@ -23,6 +23,10 @@ urlpatterns = [
     #Producto
     path('home/admin/config/productos', vistas.RenderProducto, name='productos'),
     path('home/admin/config/add-producto', vistas.AddProducto, name='addProducto'),
+    
+    #Block/Unblock Producto
+    path('home/admin/config/productos/block-producto/<int:id>', vistas.BlockProducto, name='blockProducto'),
+
     # Supervisor
     path('home/supervisor/', vistas.RenderSupHome, name='SupHome'),
     path('home/supervisor/panel', vistas.RenderPanel, name='SupPanel'),
