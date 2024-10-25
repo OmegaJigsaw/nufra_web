@@ -14,7 +14,7 @@
     <a href="{% url 'AdminHome' %}" class="nav-link">Inicio</a>
 </li>
 <li class="nav-item">
-    <a href="{% url 'Trabajadores' %}" class="nav-link">Gestion de Trabajdores</a>
+    <a href="{% url 'Trabajadores' %}" class="nav-link">Gestion de Trabajadores</a>
 </li>
 <li class="nav-item">
     <a href="{% url 'Reportes' %}" class="nav-link">Reportes</a>
@@ -54,6 +54,7 @@
                             <th>Nombre</th>
                             <th>Correo</th>
                             <th>Telefono</th>
+                            <th>Disponibilidad</th>
                             <th>Acciones</th>
                         </tr>
                     </thead>
@@ -70,12 +71,11 @@
                             <td>{{i.nombre}}</td>
                             <td>{{i.correo}}</td>
                             <td>{{i.telefono}}</td>
+                            <td>{% if i.disponible %}Disponible{% else %}No Disponible {% endif %}</td>
                             <td>
                                 <!-- cambiar texto por iconos -->
-                                <a href="#" class="btn btn-primary">Editar</a>
-                                <a href="#" class="btn btn-warning">Restringir</a>
-                                <a href="#" class="btn btn-danger">Eliminar</a>
-                            </td> 
+                                <a href="{% url 'editProveedor' i.id %}" class="btn btn-primary">Editar</a>
+                                <a href="{% url 'blockProveedor' i.id %}" class="btn btn-warning">Restringir</a>                            </td> 
                         </tr>
                         {% endfor %}
                         {% endif %}

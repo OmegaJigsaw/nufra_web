@@ -1,92 +1,124 @@
-{% extends 'shared/base.html' %}
-{% load static %}
-
-{% block title %}Agregar Producto{% endblock %}
-
+{% extends 'shared/base.html' %} {% load static %} 
+{% block title %}{% if producto %}Editar Producto{% else %}Agregar Producto{% endif %}{% endblock %} 
 {% block header %}
-    <div class="container-fluid text-center py-4" style="background-color: #4A4063;">
-        <img class="img-fluid d-block mx-auto" style="max-height: 5rem;" src="{% static '/images/Logo.png' %}" alt="Logo">
-    </div>
-{% endblock %}
+<div class="container-fluid text-center py-4" style="background-color: #4a4063">
+  <img
+    class="img-fluid d-block mx-auto"
+    style="max-height: 5rem"
+    src="{% static '/images/Logo.png' %}"
+    alt="Logo"
+  />
+</div>
+{% endblock %} {% block content %}
+<div
+  class="container d-flex align-items-center justify-content-center"
+  style="height: 70vh"
+>
 
-{% block content %}
-    <div class="container d-flex align-items-center justify-content-center" style="height: 70vh;">
-        <div class="card p-4 shadow" style="max-width: 32rem;width: 100%;">
-            <form action="" method="POST">
-                <h1 class="card-title text-center">Añadir Producto</h1>
-                {% csrf_token %}
-                <div class="form-group mt-3">
-                    <label for="nombre" class="form-label">Nombre</label>
-                    <input type="text" id="nombre" name="nombre" class="form-control" placeholder="Galletas" maxlength="150">
-                    {% if errores.name_empty %}
-                    <span class="text-danger">{{errores.name_empty}}</span>
-                    {% elif errores.name_max_char %}
-                    <span class="text-danger">{{errores.name_max_char}}</span>
-                    {% elif errores.name_numerico %}
-                    <span class="text-danger">{{errores.name_numerico}}</span>
-                    {% endif %}
-                </div>
-                <div class="row mt-3">
-                    <div class="col-6">  
-                        <label for="categoria" class="form-label">Categoria</label>
-                        <select name="categoria" id="categoria" class="form-select">
-                            <option value="-1">--Elija Categoria--</option>
-                            {% for i in categorias %}
-                            <option value="{{i.id}}">{{i.nombre}}</option>
-                            {% endfor %}
-                        </select>
-                        {% if errores.cate_default %}
-                        <span class="text-danger">{{errores.cate_default}}</span>
-                        {% endif %}
-                    </div>
-                    <div class="col-6">
-                        <label for="proveedor" class="form-label">Proveedor</label>
-                        <select name="proveedor" id="proveedor" class="form-select">
-                            <option value="-1">--Elija Proveedor--</option>
-                            {% for i in proveedores %}
-                            <option value="{{i.id}}">{{i.nombre}}</option>
-                            {% endfor %}
-                        </select>
-                        {% if errores.pro_default %}
-                        <span class="text-danger">{{errores.pro_default}}</span>
-                        {% endif %}
-                    </div>
-                </div>
-                <div class="form-group mt-3">
-                    <label for="descripcion" class="form-label">Descripcion</label>
-                    <textarea class="form-control" rows="4" name="descripcion" id="descripcion" placeholder="Chocolate"></textarea>
-                    {% if errores.des_empty %}
-                    <span class="text-danger">{{errores.des_empty}}</span>
-                    {% endif %}
-                </div>
-                <div class="row mt-3">
-                    <div class="col-6">
-                        <label for="precio" class="form-label">Precio Unitario</label>
-                        <input type="number" id="precio" name="precio" class="form-control" min="0">
-                        {% if errores.price_empty %}
-                        <span class="text-danger">{{errores.price_empty}}</span>
-                        {% elif errores.price_char_error %}
-                        <span class="text-danger">{{errores.price_char_error}}</span>
-                        {% endif %}
-                    </div>
-                    <div class="col-6">
-                        <label for="fecha" class="form-label">Fecha Ingreso</label>
-                        <input type="date" id="fecha" name="fecha" class="form-control">
-                        {% if errores.date_empty %}
-                        <span class="text-danger">{{errores.date_empty}}</span>
-                        {% elif errores.future_date %}
-                        <span class="text-danger">{{errores.future_date}}</span>
-                        {% elif errores.invalid_date %}
-                        <span class="text-danger">{{errores.invalid_date}}</span>
-                        {% endif %}
-                    </div>
-                </div>
-            
-                <div class="col mt-3">
-                    <a href="{% url 'productos' %}" class="btn btn-secondary">Volver</a>
-                    <button type="submit" class="btn btn-primary w-25">Añadir</button>
-                </div>
-            </form>
+  <div class="card p-4 shadow" style="max-width: 32rem; width: 100%">
+    <form action="{% if producto %}{% url 'editProducto' producto.id %}{% else %}{% url 'addProducto'%}{% endif %}" method="POST">
+      <h1 class="card-title text-center">
+      {% if producto %}Editar Producto{% else %}Añadir Producto{% endif %}
+      </h1>
+      {% csrf_token %}
+      <div class="form-group mt-3">
+        <label for="nombre" class="form-label">Nombre</label>
+        <input
+          type="text"
+          id="nombre"
+          name="nombre"
+          class="form-control"
+          placeholder="Carioca"
+          maxlength="150"
+          value="{% if producto %}{{ producto.nombre }}{% endif %}"
+        />
+        {% if errores.name_empty %}
+        <span class="text-danger">{{errores.name_empty}}</span>
+        {% elif errores.name_max_char %}
+        <span class="text-danger">{{errores.name_max_char}}</span>
+        {% elif errores.name_numerico %}
+        <span class="text-danger">{{errores.name_numerico}}</span>
+        {% endif %}
+      </div>
+      <div class="row mt-3">
+        <div class="col-6">
+          <label for="categoria" class="form-label">Categoria</label>
+          <select name="categoria" id="categoria" class="form-select">
+            <option value="-1">--Elija Categoria--</option>
+            {% for i in categorias %}
+            <option value="{{i.id}}" {% if producto and producto.categoria.id == i.id %}selected{% endif %}>{{i.nombre}}</option>
+            {% endfor %}
+          </select>
+          {% if errores.cate_default %}
+          <span class="text-danger">{{errores.cate_default}}</span>
+          {% endif %}
         </div>
-    </div>
+        <div class="col-6">
+          <label for="proveedor" class="form-label">Proveedor</label>
+          <select name="proveedor" id="proveedor" class="form-select">
+            <option value="-1">--Elija Proveedor--</option>
+            {% for i in proveedores %}
+            <option value="{{i.id}}" {% if producto and producto.proveedor.id == i.id %}selected{% endif %}>{{i.nombre}}</option>
+            {% endfor %}
+          </select>
+          {% if errores.pro_default %}
+          <span class="text-danger">{{errores.pro_default}}</span>
+          {% endif %}
+        </div>
+      </div>
+      <div class="form-group mt-3">
+        <label for="descripcion" class="form-label">Descripcion</label>
+        <textarea
+          class="form-control"
+          rows="4"
+          name="descripcion"
+          id="descripcion"
+          placeholder="Chocolate"
+        >{% if producto %}{{producto.descripcion}}{% endif %}</textarea>
+        {% if errores.des_empty %}
+        <span class="text-danger">{{errores.des_empty}}</span>
+        {% endif %}
+      </div>
+      <div class="row mt-3">
+        <div class="col-6">
+          <label for="precio" class="form-label">Precio Unitario</label>
+          <input
+            type="number"
+            id="precio"
+            name="precio"
+            class="form-control"
+            min="0"
+            value="{% if producto %}{{ producto.precio_unitario }}{% endif %}"
+          />
+          {% if errores.price_empty %}
+          <span class="text-danger">{{errores.price_empty}}</span>
+          {% elif errores.price_char_error %}
+          <span class="text-danger">{{errores.price_char_error}}</span>
+          {% endif %}
+        </div>
+        <div class="col-6">
+          <label for="fecha" class="form-label">Fecha Ingreso</label>
+          <input 
+            type="date" 
+            id="fecha" 
+            name="fecha" 
+            class="form-control" 
+            value="{% if producto %}{{ producto.fecha_ingreso|date:'Y-m-d' }}{% endif %}"
+          />
+          {% if errores.date_empty %}
+          <span class="text-danger">{{errores.date_empty}}</span>
+          {% elif errores.future_date %}
+          <span class="text-danger">{{errores.future_date}}</span>
+          {% elif errores.invalid_date %}
+          <span class="text-danger">{{errores.invalid_date}}</span>
+          {% endif %}
+        </div>
+      </div>
+      <div class="col mt-3">
+        <a href="{% url 'productos' %}" class="btn btn-secondary">Volver</a>
+        <button type="submit" class="btn btn-primary">{% if producto %}Guardar Cambios{% else %}Añadir{% endif %}</button>
+      </div>
+    </form>
+  </div>
+</div>
 {% endblock %}

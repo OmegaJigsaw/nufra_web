@@ -14,7 +14,7 @@
     <a href="{% url 'AdminHome' %}" class="nav-link">Inicio</a>
 </li>
 <li class="nav-item">
-    <a href="{% url 'Trabajadores' %}" class="nav-link">Gestion de Trabajdores</a>
+    <a href="{% url 'Trabajadores' %}" class="nav-link">Gestion de Trabajadores</a>
 </li>
 <li class="nav-item">
     <a href="{% url 'Reportes' %}" class="nav-link">Reportes</a>
@@ -31,13 +31,12 @@
     <div class="container">
         <div class="row">
             <h4 class="h4" style="border-bottom: solid;">Productos</h4>
-            <div class="table-responsibe mt-3">
+            <div class="table-responsive mt-3">
                 {% if productos %}
                     <div class="row">
                         <div class="col text-start">
                             <a href="{% url 'Config' %}" class="btn btn-primary mx-auto">volver</a>
-                            <!-- CREAR CRUD DE CATEGORIAS | AGREGAR TEMPLATES DENTRO DE EL DIRECTORIO CATEGORIAS -->
-                            <a href="#" class="btn btn-primary">Categorias</a>
+                            <a href="{% url 'categorias' %}" class="btn btn-primary">Categorias</a>
                         </div>
                         <div class="col text-end">
                             <a href="{% url 'addProducto' %}" class="btn btn-primary mx-auto">+</a>
@@ -47,7 +46,7 @@
                 <div class="row">
                     <div class="col text-start">
                         <a href="{% url 'Config' %}" class="btn btn-primary">Volver</a>
-                        <a href="#" class="btn btn-primary">Categorias</a>
+                        <a href="{% url 'categorias' %}" class="btn btn-primary">Categorias</a>
                     </div>
                 </div>
                 {% endif %}
@@ -83,8 +82,8 @@
                             <td>{% if i.disponible %}Disponible{% else %}No Disponible{% endif %}</td>
                             <td>
                                 <!-- REMPLAZAR TEXTO POR ICONOS -->
-                                <a href="#" class="btn btn-primary">Editar</a>
-                                <a href="{% url 'blockProducto' i.id %}" class="btn btn-danger">(/)</a>
+                                <a href="{% url 'editProducto' i.id %}" class="btn btn-primary">Editar</a>
+                                <a href="{% url 'blockProducto' i.id %}" class="btn btn-warning">(/)</a>
                             </td> 
                         </tr>
                         {% endfor %}

@@ -35,9 +35,11 @@ class Proveedor(models.Model):
     nombre = models.CharField(max_length=100, default="")
     correo = models.EmailField(max_length=255) 
     telefono = models.CharField(max_length=16)
+    disponible = models.BooleanField(default=True)
 
 class CategoriaProducto(models.Model):
     nombre = models.CharField(max_length=50)
+    disponible = models.BooleanField(default=True)
 
 class Producto(models.Model):
     nombre = models.CharField(max_length=150)
@@ -53,6 +55,7 @@ class Supervisor(Usuario):
     area = models.CharField(max_length=50)
     turno = models.CharField(max_length=50)
     equipo = models.ManyToManyField(Usuario, related_name='supervisores')
+    disponible = models.BooleanField(default=True)
 
 class Inventario(models.Model):
     producto = models.ForeignKey(Producto, on_delete=models.DO_NOTHING)
@@ -65,6 +68,7 @@ class Inventario(models.Model):
 class Vendedor(Usuario):
     nro_ventas = models.IntegerField(default=0)
     supervisor_vendedor = models.ForeignKey(Supervisor, on_delete=models.DO_NOTHING)
+    disponible = models.BooleanField(default=True)
 
 class Venta(models.Model):
     vendedor = models.ForeignKey(Vendedor, on_delete=models.DO_NOTHING)

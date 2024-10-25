@@ -12,22 +12,22 @@
 {% block content %}
     <div class="container d-flex align-items-center justify-content-center" style="height: 70vh;">
         <div class="card p-4 shadow" style="max-width: 32rem;width: 100%;">
-            <form action="" method="POST">
-                <h1 class="card-title text-center">Añadir Proveedor</h1>
+            <form action="{% if proveedor %}{% url 'editProveedor' proveedor.id %}{% else %}{% url 'addProveedor' %}{% endif %}" method="POST">
+                <h1 class="card-title text-center">{% if proveedor %}Editar Proveedor{% else %}Añadir Proveedor{% endif %}</h1>
                 {% csrf_token %}
                 <div class="form-group mt-3">
                     <label for="nombre" class="form-label">Nombre</label>
-                    <input type="text" id="nombre" name="nombre" class="form-control" placeholder="Costa" maxlength="100">
+                    <input type="text" id="nombre" name="nombre" class="form-control" placeholder="Costa" maxlength="100" value="{% if proveedor %}{{proveedor.nombre}}{% endif %}">
                     {% if errores.name_empty %}
                     <span class="text-danger">{{errores.name_empty}}</span>
                     {% endif %}
                 </div>
                 <div class="form-group mt-3" for="correo">
-                    <label for="">Correo</label>
+                    <label for="correo">Correo</label>
                     <div class="input-group">
-                        <input type="text" class="form-control" placeholder="caredenas_adrian" aria-label="correo" name="correo" id="correo">
+                        <input type="text" class="form-control" placeholder="caredenas_adrian" aria-label="correo" name="correo" id="correo" value="{% if correo %}{{ correo }}{% endif %}">
                         <span class="input-group-text">@</span>
-                        <input type="text" class="form-control" placeholder="costa.cl" aria-label="dominio" name="dominio", id="correo">
+                        <input type="text" class="form-control" placeholder="costa.cl" aria-label="dominio" name="dominio", id="correo" value="{% if dominio %}{{ dominio }}{% endif %}">
                     </div>
                     <div class="col">
                         <div class="col">
@@ -48,7 +48,7 @@
                 </div>
                 <div class="form-group mt-3">
                     <label for="telefono" class="form-label">Telefono</label>
-                    <input type="text" id="telefono" name="telefono" class="form-control" maxlength="16">
+                    <input type="text" id="telefono" name="telefono" class="form-control" maxlength="16" value="{% if proveedor %}{{ proveedor.telefono }}{% endif %}">
                     {% if errores.phone_empty %}
                     <span class="text-danger">{{errores.phone_empty}}</span>
                     {% elif errores.phone_char_error %}
@@ -58,7 +58,7 @@
             
                 <div class="col mt-3">
                     <a href="{% url 'proveedores' %}" class="btn btn-secondary">Volver</a>
-                    <button type="submit" class="btn btn-primary w-25">Añadir</button>
+                    <button type="submit" class="btn btn-primary">{% if proveedor %}Guardar Cambios{% else %}Añadir{% endif %}</button>
                 </div>
             </form>
         </div>
