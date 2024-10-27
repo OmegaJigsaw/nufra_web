@@ -46,7 +46,9 @@
           <select name="categoria" id="categoria" class="form-select">
             <option value="-1">--Elija Categoria--</option>
             {% for i in categorias %}
+            {% if i.disponible %}
             <option value="{{i.id}}" {% if producto and producto.categoria.id == i.id %}selected{% endif %}>{{i.nombre}}</option>
+            {% endif %}
             {% endfor %}
           </select>
           {% if errores.cate_default %}
@@ -58,7 +60,9 @@
           <select name="proveedor" id="proveedor" class="form-select">
             <option value="-1">--Elija Proveedor--</option>
             {% for i in proveedores %}
+            {% if i.disponible %}
             <option value="{{i.id}}" {% if producto and producto.proveedor.id == i.id %}selected{% endif %}>{{i.nombre}}</option>
+            {% endif %}
             {% endfor %}
           </select>
           {% if errores.pro_default %}
