@@ -14,7 +14,7 @@
     <a href="{% url 'AdminHome' %}" class="nav-link">Inicio</a>
 </li>
 <li class="nav-item">
-    <a href="{% url 'Trabajadores' %}" class="nav-link">Gestion de Trabajadores</a>
+    <a href="{% url 'Trabajadores' %}" class="nav-link">Gestion de Trabajdores</a>
 </li>
 <li class="nav-item">
     <a href="{% url 'Reportes' %}" class="nav-link">Reportes</a>
@@ -28,24 +28,21 @@
 {% endblock %}
 
 {% block content %}
-    <div class="container">
-        <div class="row">
-            <h4 class="h4" style="border-bottom: solid;">Actividades</h4>
-            <div class="col-2 mt-3 mx-auto">
-                <a href="{% url 'productos' %}">
-                    Icono
-                    <!-- <i></i> -->
-                </a>
-                <h5 class="h5">Productos</h5>
-            </div>
-
-            <div class="col-2 mt-3 mx-auto">
-                <a href="{% url 'proveedores' %}">
-                    Icono
-                    <!-- <i></i> -->
-                </a>
-                <h5 class="h5">Proveedores</h5>
-            </div>
+<div class="container">
+    <div class="row">
+        <h4 class="h4" style="border-bottom: solid;">Actividades</h4>
+        <div class="col-2 mt-3 mx-auto text-center">
+            <a href="{% url 'productos' %}">
+                <i class="fas fa-box fa-3x"></i>
+            </a>
+            <h5 class="h5 mt-2">Productos</h5>
+        </div>
+        <div class="col-2 mt-3 mx-auto text-center">
+            <a href="{% url 'proveedores' %}">
+                <i class="fas fa-truck fa-3x"></i>
+            </a>
+            <h5 class="h5 mt-2">Proveedores</h5>
         </div>
     </div>
+</div>
 {% endblock %}
