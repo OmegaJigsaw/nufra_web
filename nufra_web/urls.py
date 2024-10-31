@@ -1,4 +1,6 @@
 from django.contrib import admin
+from django.conf import settings
+from django.conf.urls.static import static
 from django.urls import path
 from app import views as vistas
 
@@ -49,4 +51,6 @@ urlpatterns = [
     # Vendedor
     path('home/vendedor/', vistas.RenderVenHome, name='VenHome'),
     path('home/vendedor/ventas/', vistas.RenderVentas, name='Ventas'),
-]
+    
+    
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

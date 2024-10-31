@@ -49,6 +49,7 @@ class Producto(models.Model):
     proveedor = models.ForeignKey(Proveedor, on_delete=models.DO_NOTHING)
     precio_unitario = models.FloatField() 
     disponible = models.BooleanField(default=True)
+    imagen = models.ImageField(upload_to='producto/', null=True, blank=True)
 
 # Tablas Supervisor
 class Supervisor(Usuario):

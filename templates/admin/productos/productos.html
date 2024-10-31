@@ -53,6 +53,7 @@
                 <table class="table table-hover">
                     <thead>
                         <tr>
+                            <th>Imagen</th>
                             <th>Nombre</th>
                             <th>Categoria</th>
                             <th>Descripcion</th>
@@ -73,6 +74,13 @@
                         {% else %}
                         {% for i in productos %}
                         <tr>
+                            <td>
+                                {% if i.imagen %}
+                                <img src="{{ i.imagen.url }}" alt="Imagen Producto" class="img-fluid">
+                                {% else %}
+                                <span class="text-danger">No hay imagen del Producto</span>
+                                {% endif %}
+                            </td>
                             <td>{{i.nombre}}</td>
                             <td>{{i.categoria.nombre}}</td>
                             <td>{{i.descripcion}}</td>

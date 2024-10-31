@@ -25,7 +25,12 @@ def RenderUserHome(request):
     return render(request, 'usuario/indexUser.html')
 
 def RenderUserCatalog(request):
-    return render(request, 'usuario/catalog.html')
+    if request.method == 'GET':
+        # Filtros para visualizar solo las categorias con productos 
+        categorias_con_productos = CategoriaProducto.objects.filter(producto__isnull=False).distinct()
+        productos = Producto.objects.filter(categoria__in=categorias_con_productos)
+
+        return render(request, 'usuario/catalog.html', {'categorias': categorias_con_productos, 'productos': productos})
 
 def RenderAbout(request):
     return render(request, 'usuario/about.html')
@@ -316,6 +321,7 @@ def AddProducto(request):
         descripcion = request.POST.get('descripcion')
         precio = request.POST.get('precio')
         fecha = request.POST.get('fecha')
+        imagen = request.FILES.get('imagen')
 
         # Validacion Nombre
         if nombre.strip() == "":
@@ -372,8 +378,10 @@ def AddProducto(request):
                 proveedor=get_object_or_404(Proveedor, id=proveedor),
                 descripcion=descripcion,
                 precio_unitario=precio,
-                fecha_ingreso=fecha
+                fecha_ingreso=fecha,
+                imagen=imagen
             )
+
             producto.save()
             return redirect('addProducto')
         else:
@@ -396,6 +404,7 @@ def EditProducto(request, id):
         descripcion = request.POST.get('descripcion')
         precio = request.POST.get('precio')
         fecha = request.POST.get('fecha')
+        imagen = request.FILES.get('imagen')
 
         # Validacion Nombre
         if nombre.strip() == "":
@@ -453,6 +462,9 @@ def EditProducto(request, id):
             producto.descripcion = descripcion
             producto.precio_unitario = precio
             producto.fecha_ingreso = fecha
+            if imagen:
+                producto.imagen = imagen
+        
             producto.save()
 
             return redirect('productos') 
