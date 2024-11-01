@@ -1,7 +1,7 @@
 import datetime
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
-from .models import Producto, CategoriaProducto, Proveedor, Inventario
+from .models import Supervisor, Vendedor,Administrador , Roles, Producto, CategoriaProducto, Proveedor, Inventario
 # CamelCase Para las vistas
 # snake_case para lo interno
 
@@ -9,16 +9,154 @@ from .models import Producto, CategoriaProducto, Proveedor, Inventario
 def RenderLogin(request):
     if request.method == "POST":
         pass
-    
+
     elif request.method == "GET":
         return render(request, 'shared/login.html')
 
 def RenderRegister(request):
+    roles = Roles.objects.all()
+    vendedores = Vendedor.objects.all()
+    supervisores = Supervisor.objects.all()
     if request.method == "POST":
-        pass
+        # USUARIO
+        has_error = {}
+        nombre = request.POST.get('nombre')
+        apellido = request.POST.get('apellido')
+        username = request.POST.get('username')
+        rol = request.POST.get('rol')
+        password = request.POST.get('password')
+        confirm_password = request.POST.get('confirm_password')
+
+        # DE ROLES
+        telefono = request.POST.get('telefono')
+
+        supervisor_select = request.POST.get('supervisor')
+        turno = request.POST.get('turno')
+        equipo = request.POST.getlist('equipo')
+        
+        # VALIDACIONES GENERALES
+        chars_restringidos_correo = [
+            ' ', '..', '(', ')', '<', '>', '[',
+            ']', ',', ';', ':', '"', '@'
+            ]
+        
+        if nombre.strip() == "":
+            has_error['name_empty'] = 'El Campo NOMBRE no Puede Estar Vacio'
+        elif len(nombre) > 150:
+            has_error['name_max_char'] = 'Se ha Superado el MAXIMO de Caracteres, MAXIMO Permitido: 150'
+        else:
+            nombre = nombre.title()
+
+        if apellido.strip() == "":
+            has_error['ape_empty'] = 'El Campo Apellido no Puede Estar Vacio'
+        elif len(apellido) > 150:
+            has_error['ape_max_char'] = 'Se ha Superado el MAXIMO de Caracteres, MAXIMO Permitido: 150'
+        else:
+            apellido = apellido.title()
+
+        if username.strip() == "":
+            has_error['username_empty'] = 'El Campo CORREO no Puede Estar Vacio'
+        else:
+            invalid_char = []
+            for char in username:
+                if char in chars_restringidos_correo:
+                    invalid_char.append(char)
+            if len(invalid_char) > 0:
+                invalid_char_str = ', '.join(set(invalid_char))
+                has_error['username_char_error'] = 'Caracter no Valido: {}.'.format(invalid_char_str)
+        
+        if rol == '-1':
+            has_error['rol_default'] = 'El Campo ROL Debe ser DISTINTO al PREDETERMINADO'
+
+        if password.strip() == "":
+            has_error['password_empty'] = 'El Campo Contraseña no Puede Estar Vacio'
+        elif len(password) > 128:
+            has_error['password_max_char'] = 'Se ha Superado el MAXIMO de Caracteres, MAXIMO Permitido: 128'
+        
+        if confirm_password.strip() == "":
+            has_error['con_pass_empty'] = 'El Campo de Confirmacion de Contraseña no Puede Estar Vacio'
+        elif len(confirm_password) > 128:
+            has_error['con_pass_max_char'] = 'Se ha Superado el MAXIMO de Caracteres, MAXIMO Permitido: 128'
+
+        if password != confirm_password:
+            has_error['password_final'] = 'Las contraseñas no coinciden'
+
+        # VALIDACIONES DE ROL
+        
+        if rol == '1':
+            if telefono.strip() == "":
+                has_error['telefono_empty'] = 'El Campo Teléfono no Puede Estar Vacio'
+            
+        elif rol == '2':
+            if supervisor_select == '-1' or supervisor_select == '':
+                supervisor = None
+                disponible = False
+            elif supervisor_select == None:
+                has_error['none_error'] = 'Debe Elegir una Opcion, la PREDETERMINADA Cuenta'
+            else:
+                try:
+                    supervisor = Supervisor.objects.get(id=supervisor_select)
+                    disponible = True
+                except:
+                    has_error['not_found'] = 'Supervisor no encontrado'
+
+        elif rol == '3':
+            if turno.strip() == "":
+                has_error['turno_empty'] = 'El Campo Turno no Puede Estar Vacio'
+            elif '-1' in equipo and len(equipo) > 1:
+                has_error['equipo_multi'] = 'No se puede seleccionar "Sin equipo" junto con otra opción.'
+                    
+            if not equipo:
+                has_error['equipo_empty'] = 'Debe Seleccionar al Menos un Vendedor o la Opcion Predeterminada'
+
+        # VALIDAR EXISTENCIA DEL OBJETO
+
+        if not has_error:
+            if rol == '1':
+                user = Administrador(
+                    nombre=nombre,
+                    apellido=apellido,
+                    username=username,
+                    rol=Roles.objects.get(id=rol),
+                    correo= username + '@nufra.com',
+                    telefono=telefono
+                )
+                user.set_password(password)
+                user.save()
+            if rol == '2':
+                user = Vendedor(
+                    nombre=nombre,
+                    apellido=apellido,
+                    username=username,
+                    rol=Roles.objects.get(id=rol),
+                    nro_ventas=0,
+                    supervisor_vendedor=supervisor,
+                    disponible=disponible
+                )
+                user.set_password(password)
+                user.save()
+
+            if rol == '3':
+                user = Supervisor(
+                    nombre=nombre,
+                    apellido=apellido,
+                    username=username,
+                    rol=Roles.objects.get(id=rol),
+                    turno=turno
+                )
+                user.set_password(password)
+                user.save()
+
+                if equipo:
+                    equipo_venta = Vendedor.objects.filter(id__in=equipo)
+                    user.equipo.set(equipo_venta)
+
+            return render(request, 'admin/views/register.html', {'roles': roles, 'vendedores': vendedores, 'supervisores': supervisores})
+        else:
+            return render(request, 'admin/views/register.html', {'roles': roles, 'vendedores': vendedores, 'supervisores': supervisores, 'errores': has_error})
     
     elif request.method == "GET":
-        return render(request, 'admin/views/register.html')
+        return render(request, 'admin/views/register.html', {'roles': roles, 'vendedores': vendedores, 'supervisores': supervisores})
 
 # Usuario General
 def RenderUserHome(request):

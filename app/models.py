@@ -8,6 +8,8 @@ from django.contrib.auth.hashers import make_password, check_password
 # Tabla General de Usuarios
 class Roles(models.Model):
     nombre = models.CharField(max_length=50)
+    disponible = models.BooleanField(default=True)
+
 
 class Usuario(models.Model):
     nombre = models.CharField(max_length=150, default="")
@@ -15,7 +17,7 @@ class Usuario(models.Model):
     # El Username es la parte principal del correo lo que esta antes del @
     username = models.CharField(max_length=255, unique=True)
     password = models.CharField(max_length=128)
-    estado = models.CharField(max_length=30)
+    estado = models.CharField(max_length=30, default="Activo")
     rol = models.ForeignKey(Roles, on_delete=models.CASCADE)
 
     def set_password(self, raw_password):
@@ -53,9 +55,8 @@ class Producto(models.Model):
 
 # Tablas Supervisor
 class Supervisor(Usuario):
-    area = models.CharField(max_length=50)
     turno = models.CharField(max_length=50)
-    equipo = models.ManyToManyField(Usuario, related_name='supervisores')
+    equipo = models.ManyToManyField(Usuario, related_name='supervisores', blank=True)
     disponible = models.BooleanField(default=True)
 
 class Inventario(models.Model):
@@ -68,7 +69,7 @@ class Inventario(models.Model):
 # Tablas Vendedor
 class Vendedor(Usuario):
     nro_ventas = models.IntegerField(default=0)
-    supervisor_vendedor = models.ForeignKey(Supervisor, on_delete=models.DO_NOTHING)
+    supervisor_vendedor = models.ForeignKey(Supervisor, on_delete=models.DO_NOTHING, null=True, blank=True)
     disponible = models.BooleanField(default=True)
 
 class Venta(models.Model):

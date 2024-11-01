@@ -11,7 +11,7 @@ urlpatterns = [
     # Control de acceso
     path('login/', vistas.RenderLogin, name='LogIn'),
     path('register/', vistas.RenderRegister, name='Register'),
-
+    
     # Usuario
     path('catalogo/', vistas.RenderUserCatalog, name='Catalog'),
     path('acerca-de/', vistas.RenderAbout, name='About'),
