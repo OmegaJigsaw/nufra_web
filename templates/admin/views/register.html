@@ -14,13 +14,13 @@
     <a href="{% url 'AdminHome' %}" class="nav-link">Inicio</a>
 </li>
 <li class="nav-item">
-    <a href="{% url 'Trabajadores' %}" class="nav-link">Gestion de Trabajadores</a>
+    <a href="{% url 'Trabajadores' %}" class="nav-link">Gestión de Trabajadores</a>
 </li>
 <li class="nav-item">
     <a href="{% url 'Reportes' %}" class="nav-link">Reportes</a>
 </li>
 <li class="nav-item">
-    <a href="{% url 'Config' %}" class="nav-link">Configuracion Tienda</a>
+    <a href="{% url 'Config' %}" class="nav-link">Configuración Tienda</a>
 </li>
 <li class="nav-item">
     <a href="{% url 'Register' %}" class="nav-link">Ingreso de Usuarios</a>
@@ -28,6 +28,57 @@
 {% endblock %}
 
 {% block content %}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<div class="container d-flex align-items-center justify-content-center" style="height: 70vh;">
+    <div class="card p-4 shadow" style="max-width: 32rem; width: 100%;">
+        <h1 class="card-title text-center">Registro</h1>
+        <form action="">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-6 mt-3">
+                    <label for="nombre" class="form-label">Nombre</label>
+                    <input type="text" id="nombre" name="nombre" class="form-control" placeholder="Juan" required>
+                </div>
+                <div class="col-6 mt-3">
+                    <label for="apellido" class="form-label">Apellido</label>
+                    <input type="text" id="apellido" name="apellido" class="form-control" placeholder="Peralta" required>
+                </div>
+            </div>
+            <div class="form-group mt-3">
+                <label for="correo" class="form-label">Correo</label>
+                <div class="input-group">
+                    <input type="text" class="form-control" id="email" name="email" placeholder="peralta.javier02" aria-label="correo" aria-describedby="basic-addon2" required>
+                    <span class="input-group-text" id="basic-addon2">@nufra.com</span>
+                </div>
+            </div>
+
+            <div class="form-group mt-3">
+                <label for="rol" class="form-label">Rol</label>
+                <select name="rol" id="rol" class="form-select" required>
+                    <option value="-1">--Seleccione un Rol--</option>
+                    <!-- Obtener los roles de la BD para cargar esto -->
+                </select>
+            </div>
+
+            <div class="row">
+                <div class="col-6 mt-2">
+                    <label for="password" class="form-label">Contraseña</label>
+                    <input type="password" name="password" class="form-control" required>
+                </div>
+                <div class="col-6 mt-2 mb-3">
+                    <label for="password-confirm" class="form-label">Confirmar Contraseña</label>
+                    <input type="password" name="password-confirm" class="form-control" required>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Registrar</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
+=======
+=======
+>>>>>>> dd44d15996b2dd8ca11163cf0268d05997afe7f2
     <div class="container d-flex align-items-center justify-content-center" style="height: 80vh;">
         <div class="card p-4 shadow" style="max-width: 32rem;width: 100%;">
             <h1 class="card-title text-center">Registro</h1>
@@ -164,4 +215,9 @@
         </div>
     </div>
     <script src="{% static 'js/register/select.js' %}"></script>    
+<<<<<<< HEAD
 {% endblock %}
+>>>>>>> dd44d15996b2dd8ca11163cf0268d05997afe7f2
+=======
+{% endblock %}
+>>>>>>> dd44d15996b2dd8ca11163cf0268d05997afe7f2
