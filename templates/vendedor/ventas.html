@@ -14,7 +14,7 @@
     <a href="{% url 'VenHome' %}" class="nav-link">Inicio</a>
 </li>
 <li class="nav-item">
-    <a href="{% url 'Ventas' %}" class="nav-link">Gestión Venta</a>
+    <a href="{% url 'Ventas' %}" class="nav-link">Gestion Venta</a>
 </li>
 {% endblock %}
 
@@ -26,45 +26,55 @@
                 {% csrf_token %}
                 <div class="row">
                     <div class="col-3">
-                        <label for="codigo" class="form-label">Código</label>
-                        <input type="number" name="codigo" id="codigo" class="form-control" placeholder="Ingrese código">
+                        <label for="codigo" class="form-label">Codigo</label>
+                        <input type="number" name="codigo" id="codigo" class="form-control">
                     </div>
                     <div class="col-3">
                         <label for="cantidad" class="form-label">Cantidad</label>
-                        <input type="number" name="cantidad" id="cantidad" class="form-control" placeholder="Ingrese cantidad">
+                        <input type="number" name="cantidad" id="cantidad" class="form-control">
                     </div>
                 </div>
                 <button type="submit" class="btn btn-primary mt-3">Agregar Carro</button>
             </form>
-        </div>
+            <div class="row mt-3">
+                <h5 class="h5" style="border-bottom: solid;">En el carro actual</h5>
+                <form action="" method="POST">
+                    <div class="col-3">
+                        <label for="rut" class="form-label">Rut Cliente</label>
+                        <input type="text" name="rut" id="rut" class="form-control" maxlength="13">
+                    </div>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Codigo</th>
+                                <th>Producto</th>
+                                <th>Cantidad</th>
+                                <th>Precio Unitario</th>
+                                <th>Precio Total</th>
+                                <th>Accion</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Iterar Carro de Compras -->
+                            <!-- 
+                                La logica de esto es que esta tabla se llena con una lista llamada Carro de Compras
+                                Luego en las views se crea un objeto de clase venta con la variable total sin rellenar
+                                Mediante un for se iteran los objetos de esta tabla en las vistas y se suma el total de cada producto a una variable global
+                                Luego que en las vistas se itere toda la lista se realiza la venta de verdad tomando en producto la lista de productos que se itero y sus valores de objeto
+                                Y la variable global con el valor total de venta
+                            -->
 
-        <div class="row mt-3">
-            <h5 class="h5" style="border-bottom: solid;">En el carro actual</h5>
-            <form action="" method="POST">
-                <div class="col-3">
-                    <label for="rut" class="form-label">Rut Cliente</label>
-                    <input type="text" name="rut" id="rut" class="form-control" maxlength="13" placeholder="Ingrese Rut del cliente">
-                </div>
-                <table class="table mt-3">
-                    <thead>
-                        <tr>
-                            <th>Código</th>
-                            <th>Producto</th>
-                            <th>Cantidad</th>
-                            <th>Precio Unitario</th>
-                            <th>Precio Total</th>
-                            <th>Acción</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!-- Iterar Carro de Compras -->
-                        <!-- Aquí se debe incluir la lógica para mostrar los productos en el carro -->
-                    </tbody>
-                </table>
-                <button type="submit" class="btn btn-primary mt-3">Confirmar Compra</button>
-            </form>
+                             <!-- <td>
+                                <input type="hidden" name="codigo" value="#">
+                                <input type="hidden" name="cantidad" value="#">
+                                <input type="hidden" name="precioTotal" value="#">
+                             </td> -->
+                        </tbody>
+                    </table>
+                    <button type="submit" class="btn btn-primary">Confirmar Compra</button>
+                </form>
+            </div>
         </div>
-
         <div class="row mt-3">
             <h4 class="h4" style="border-bottom: solid;">Historial de Ventas</h4>
             <div class="col mt-3">
@@ -74,7 +84,7 @@
                             <th>Nro</th>
                             <th>Productos</th>
                             <th>Precio</th>
-                            <th>Acción</th>
+                            <th>Accion</th>
                         </tr>
                     </thead>
                     <tbody>

@@ -1,64 +1,62 @@
 {% extends 'shared/baseIndex.html' %}
 {% load static %}
 
-{% block title %}Catálogo{% endblock %}
+{% block title %}Catalogo{% endblock %}
 
 {% block brand %}
-<a href="{% url 'home' %}" class="navbar-brand d-flex align-items-center">
-    <img class="img-fluid d-block mx-auto" style="max-height: 5rem;" src="{% static 'images/Logo.png' %}" alt="Logo de la tienda de confites">
+<a href="{% url 'home' %}" class="navbar-brand">
+    <img class="img-fluid d-block mx-auto" style="max-height: 5rem;" src="{% static '/images/Logo.png' %}" alt="Logo">
 </a>
 {% endblock %}
 
 {% block navitems %}
     <li class="nav-item">
-        <a href="{% url 'home' %}" class="nav-link text-decoration-underline">Inicio</a>
+        <a href="{% url 'home' %}" class="nav-link">Inicio</a>
     </li>
     <li class="nav-item">
-        <a href="{% url 'Catalog' %}" class="nav-link text-decoration-underline">Catálogo</a>
+        <a href="{% url 'Catalog' %}" class="nav-link">Catalogo</a>
     </li>
     <li class="nav-item">
-        <a href="{% url 'About' %}" class="nav-link text-decoration-underline">Acerca de</a>
+        <a href="{% url 'About' %}" class="nav-link">Acerca de</a>
     </li>
     <li class="nav-item">
-        <a href="{% url 'FAQ' %}" class="nav-link text-decoration-underline">FAQ</a>
+        <a href="{% url 'FAQ' %}" class="nav-link">FAQ</a>
     </li>
 {% endblock %}
 
 {% block content %}
-<section class="catalog-container py-5 bg-light">
-    <h1 class="text-center text-danger fw-bold mb-5" style="font-family: 'Comic Sans MS', cursive, sans-serif;">Catálogo</h1>
     <div class="container">
+        <h1>Catalogo</h1>
         {% if categorias %}
-            {% for categoria in categorias %}
-                <div class="row mb-4">
-                    <h2 class="text-dark fw-bold" style="border-bottom: solid 2px #ff9999;">{{ categoria.nombre }}</h2>
-                    {% if productos %}
-                        <div class="col">
-                            <div class="d-flex overflow-auto flex-nowrap">
-                                {% for producto in productos %}
-                                    {% if producto.categoria.id == categoria.id %}
-                                        <div class="card mx-2 shadow-sm" style="min-width: 150px; max-width: 200px; border: 1px solid #ff9999;">
-                                            <div class="card-body text-center">
-                                                <a href="#">
-                                                    <img src="{{ producto.imagen.url }}" alt="Imagen de {{ producto.nombre }}" class="img-fluid" style="height: 10rem;">
-                                                </a>
-                                            </div>
-                                            <div class="card-footer text-center">
-                                                <p class="card-title mb-0" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ producto.nombre }}</p>
-                                            </div>
-                                        </div>
-                                    {% endif %}
-                                {% endfor %}
+        {% for categoria in categorias %}
+        <div class="row">
+            <h2 style="border-bottom: solid;">{{ categoria.nombre }}</h2>
+            {% if productos %}
+            <div class="col">
+                <div class="d-flex overflow-auto flex-nowrap">
+                    {% for producto in productos %}
+                        {% if producto.categoria.id == categoria.id %}
+                            <div class="card mx-2 shadow" style="min-width: 150px; max-width: 200px;">
+                                <div class="card-body text-center">
+                                    <a href="#">
+                                        <img src="{{ producto.imagen.url }}" alt="Imagen {{ producto.nombre }}" class="img-fluid" style="height: 10rem;">
+                                    </a>
+                                </div>
+                                <div class="card-footer text-center">
+                                    <p class="card-title mb-0" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ producto.nombre }}</p>
+                                </div>
                             </div>
-                        </div>
-                    {% else %}
-                        <h2 class="text-danger">No Hay Productos Disponibles</h2>
-                    {% endif %}
+                        {% endif %}
+                    {% endfor %}
                 </div>
-            {% endfor %}
-        {% else %}
-            <h2 class="text-danger">No Hay Categorías Disponibles</h2>
+            </div>
+            {% else %}
+            <h2 class="text-danger">No Hay Productos Disponibles</h2>
+            {% endif %}
+        </div>
+        {% endfor %}
+        {% else %} 
+        <h2 class="text-danger">No Hay Categorias Disponibles</h2>
         {% endif %}
     </div>
-</section>
 {% endblock %}

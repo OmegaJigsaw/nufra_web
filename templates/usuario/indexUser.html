@@ -1,37 +1,29 @@
 {% extends 'shared/baseIndex.html' %}
 {% load static %}
 
-{% block title %}Inicio{% endblock %}
+{% block title %}Home{% endblock %}
 
 {% block brand %}
-<a href="{% url 'home' %}" class="navbar-brand d-flex align-items-center">
-    <img class="img-fluid d-block mx-auto" style="max-height: 5rem;" src="{% static 'images/Logo.png' %}" alt="Logo de la tienda de confites">
+<a href="{% url 'home' %}" class="navbar-brand">
+    <img class="img-fluid d-block mx-auto" style="max-height: 5rem;" src="{% static '/images/Logo.png' %}" alt="Logo">
 </a>
 {% endblock %}
 
 {% block navitems %}
     <li class="nav-item">
-        <a href="{% url 'home' %}" class="nav-link text-decoration-underline">Inicio</a>
+        <a href="{% url 'home' %}" class="nav-link">Inicio</a>
     </li>
     <li class="nav-item">
-        <a href="{% url 'Catalog' %}" class="nav-link text-decoration-underline">Catálogo</a>
+        <a href="{% url 'Catalog' %}" class="nav-link">Catalogo</a>
     </li>
     <li class="nav-item">
-        <a href="{% url 'About' %}" class="nav-link text-decoration-underline">Acerca de</a>
+        <a href="{% url 'About' %}" class="nav-link">Acerca de</a>
     </li>
     <li class="nav-item">
-        <a href="{% url 'FAQ' %}" class="nav-link text-decoration-underline">FAQ</a>
+        <a href="{% url 'FAQ' %}" class="nav-link">FAQ</a>
     </li>
 {% endblock %}
 
 {% block content %}
-<section class="home-container py-5 bg-light">
-    <h1 class="text-center text-danger fw-bold mb-5" style="font-family: 'Comic Sans MS', cursive, sans-serif;">Contenido Destacado</h1>
-    <div class="col mx-auto" style="max-width: 800px;">
-        <p class="text-muted ms-3">Bienvenido a Nufra, tu destino para los mejores productos de confitería. Explora nuestro catálogo y descubre dulces sorpresas.</p>
-    </div>
-    <div class="d-flex justify-content-center">
-        <img class="img-fluid" src="{% static 'images/home-banner.jpg' %}" alt="Banner de bienvenida" style="max-width: 100%; height: auto;">
-    </div>
-</section>
+    <h1>Contenido Destacado</h1>
 {% endblock %}

@@ -14,42 +14,31 @@
     <a href="{% url 'VenHome' %}" class="nav-link">Inicio</a>
 </li>
 <li class="nav-item">
-    <a href="{% url 'Ventas' %}" class="nav-link">Gestión Venta</a>
+    <a href="{% url 'Ventas' %}" class="nav-link">Gestion Venta</a>
 </li>
 {% endblock %}
 
 {% block content %}
-<div class="container">
-    <!-- Sección dedicada a la visualización del inventario actual -->
-    <div class="row mt-3">
-        <h4 class="h4" style="border-bottom: solid;">Inventario Actual</h4>
-        <div class="col mt-3">
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>Codigo</th>
-                        <th>Producto</th>
-                        <th>Categoría</th>
-                        <th>Stock</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Aquí se debe incluir la lógica para iterar y mostrar productos en la base de datos -->
-                    {% for producto in inventario %}
-                    <tr>
-                        <td>{{ producto.codigo }}</td>
-                        <td>{{ producto.nombre }}</td>
-                        <td>{{ producto.categoria }}</td>
-                        <td>{{ producto.stock }}</td>
-                    </tr>
-                    {% empty %}
-                    <tr>
-                        <td colspan="4" class="text-center">No hay productos disponibles.</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+    <div class="container">
+    <!-- El vendedor solo maneja venta -->
+    <!-- La informacion relevante para el vendedor seria el stock -->
+        <div class="row mt-3">
+            <h4 class="h4" style="border-bottom: solid;">Inventario Actual</h4>
+            <div class="col mt-3">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Codigo</th>
+                            <th>Producto</th>
+                            <th>Categoria</th>
+                            <th>Stock</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Iterar productos en BD -->
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
-</div>
 {% endblock %}
