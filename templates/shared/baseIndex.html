@@ -27,39 +27,40 @@
 
             <!-- Botón de despliegue nav para pantalla pequeña -->
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <i class="fas fa-bars"></i>
+                <i class="fas fa-bars fa-2x" style="color: white;"></i>
             </button>
 
             <!-- Contenedor para los elementos del menú -->
             <div class="collapse navbar-collapse" id="navbarNav">
                 <!-- Lista de items de la barra de navegación -->
                 <ul class="navbar-nav flex-row mt-5 mx-3">
-                    {% block navitems %}
-                        <li class="nav-item">
-                            <a href="{% url 'Catalog' %}" class="nav-link text-white">Catálogo</a> <!-- Uso de la URL existente -->
-                        </li>
-                        <li class="nav-item">
-                            <a href="{% url 'About' %}" class="nav-link text-white">Acerca de</a> <!-- Uso de la URL existente -->
-                        </li>
-                        <li class="nav-item">
-                            <a href="{% url 'FAQ' %}" class="nav-link text-white">Preguntas Frecuentes</a> <!-- Uso de la URL existente -->
-                        </li>
-                        {% if user.is_authenticated %}
-                            <li class="nav-item">
-                                <a href="{% url 'AdminHome' %}" class="nav-link text-white">Admin</a> <!-- Uso de la URL existente -->
-                            </li>
-                        {% endif %}
+                    {% block home %}
+                    {% if request.session.rol_id == '1' %}
+                        <a href="{% url 'AdminHome' %}">
+                            <i class="fa-solid fa-house-user fa-2x" style="color: white;"></i>
+                        </a>
+                    {% elif request.session.rol_id == '2' %}
+                        <a href="{% url 'VenHome' %}">
+                            <i class="fa-solid fa-house-user fa-2x" style="color: white;"></i>
+                        </a>
+                    {% elif request.session.rol_id == '3' %}
+                        <a href="{% url 'SupHome' %}">
+                            <i class="fa-solid fa-house-user fa-2x" style="color: white;"></i>
+                        </a>
+                    {% endif %}
+                    {% endblock %}
+                    {% block navitems %}  
                     {% endblock %}
                 </ul>
 
                 <!-- Botón para login o perfil dependiendo del estado de autenticación -->
                 <div class="ms-auto">
-                    {% if user.is_authenticated %}
-                        <a href="{% url 'AdminHome' %}" class="nav-link">
-                            <i class="fas fa-user fa-2x" style="color: white;"></i>
+                    {% if request.session.user_id %}
+                        <a href="{% url 'LogOut' %}" title="Cerrar sesión">
+                            <i class="fa-solid fa-right-from-bracket fa-2x" style="color: white"></i>
                         </a>
                     {% else %}
-                        <a href="{% url 'LogIn' %}" class="nav-link">
+                        <a href="{% url 'Login' %}" class="nav-link" title="Iniciar sesión">
                             <i class="fas fa-user fa-2x" style="color: white;"></i>
                         </a>
                     {% endif %}

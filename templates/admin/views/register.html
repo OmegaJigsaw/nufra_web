@@ -38,18 +38,18 @@
                         <label for="nombre" class="form-label">Nombre</label>
                         <input type="text" id="nombre" name="nombre" class="form-control" placeholder="Juan" maxlength="150">
                         {% if errores.name_empty %}
-                        <span>{{errores.name_empty}}</span>
+                        <span class="text-danger">{{errores.name_empty}}</span>
                         {% elif errores.name_max_char %}
-                        <span>{{errores.name_empty}}</span>
+                        <span class="text-danger">{{errores.name_empty}}</span>
                         {% endif %}
                     </div>
                     <div class="col-6 mt-3">
                         <label for="apellido" class="form-label">Apellido</label>
                         <input type="text" id="apellido" name="apellido" class="form-control" placeholder="Peralta" maxlength="150">
                         {% if errores.ape_empty %}
-                        <span>{{errores.ape_empty}}</span>
+                        <span class="text-danger">{{errores.ape_empty}}</span>
                         {% elif errores.ape_max_char %}
-                        <span>{{errores.ape_max_char}}</span>
+                        <span class="text-danger">{{errores.ape_max_char}}</span>
                         {% endif %}
                     </div>
                 </div>
@@ -69,9 +69,9 @@
                         <span class="input-group-text" id="basic-addon2">@nufra.com</span>
                     </div>
                     {% if errores.username_empty %}
-                    <span>{{errores.username_empty}}</span>
+                    <span class="text-danger">{{errores.username_empty}}</span>
                     {% elif errores.username_char_error %}
-                    <span>{{errores.username_char_error}}</span>
+                    <span class="text-danger">{{errores.username_char_error}}</span>
                     {% endif %}
                 </div>
                 <div class="form-group mt-3">
@@ -83,7 +83,7 @@
                         {% endfor %}
                     </select>
                     {% if errores.rol_default %}
-                    <span>{{errores.rol_default}}</span>
+                    <span class="text-danger">{{errores.rol_default}}</span>
                     {% endif%}
                 </div>
 
@@ -92,22 +92,22 @@
                         <label for="password" class="form-label">Contraseña</label>
                         <input type="password" id="password" name="password" class="form-control" maxlength="128">
                         {% if errores.password_empty %}
-                        <span>{{errores.password_empty}}</span>
+                        <span class="text-danger">{{errores.password_empty}}</span>
                         {% elif errores.password_max_char %}
-                        <span>{{errores.password_max_char}}</span>
+                        <span class="text-danger">{{errores.password_max_char}}</span>
                         {% endif %}
                     </div>
                     <div class="col-6 mt-2">
                         <label for="confirm_password" class="form-label">Confirmar Contraseña</label>
                         <input type="password" name="confirm_password" id="confirm_password" class="form-control" maxlength="128">
                         {% if errores.con_pass_empty %}
-                        <span>{{errores.con_pass_empty}}</span>
+                        <span class="text-danger">{{errores.con_pass_empty}}</span>
                         {% elif errores.con_pass_max_char %}
-                        <span>{{errores.con_pass_max_char}}</span>
+                        <span class="text-danger">{{errores.con_pass_max_char}}</span>
                         {% endif %}
                     </div>
                     {% if errores.password_final %}
-                    <span>{{errores.password_final}}</span>
+                    <span class="text-danger">{{errores.password_final}}</span>
                     {% endif %}
                 </div>
 
@@ -118,7 +118,7 @@
                     <label for="telefono" class="form-label">Teléfono</label>
                     <input type="text" id="telefono" name="telefono" class="form-control" placeholder="Ingrese teléfono" maxlength="15">
                     {% if errores.telefono_empty %}
-                    <span>{{errores.telefono_empty}}</span>
+                    <span class="text-danger">{{errores.telefono_empty}}</span>
                     {% endif %}
                 </div>
 
@@ -133,7 +133,7 @@
                             {% endfor %}
                         </select>
                         {% if errores.none_error %}
-                        <span>{{errores.none_error}}</span>
+                        <span class="text-danger">{{errores.none_error}}</span>
                         {% endif %}
                     </div>
                 </div>
@@ -142,7 +142,7 @@
                     <label for="turno" class="form-label">Turno</label>
                     <input type="text" id="turno" name="turno" class="form-control" placeholder="Turno asignado">
                     {% if errores.turno_empty %}
-                    <span>{{errores.turno_empty}}</span>
+                    <span class="text-danger">{{errores.turno_empty}}</span>
                     {% endif %}
                     <div class="form-group" id="equipoFields" style="display: none;">
                         <label for="equipo" class="form-label">Seleccionar Equipo</label>
@@ -153,9 +153,9 @@
                             {% endfor %}
                         </select>
                         {% if errores.equipo_empty %}
-                        <span>{{errores.equipo_empty}}</span>
+                        <span class="text-danger">{{errores.equipo_empty}}</span>
                         {% elif errores.equipo_multi %}
-                        <span>{{errores.equipo_multi}}</span>
+                        <span class="text-danger">{{errores.equipo_multi}}</span>
                         {% endif %}
                     </div>    
                 </div>

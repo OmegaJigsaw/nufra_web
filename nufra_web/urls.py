@@ -9,8 +9,9 @@ urlpatterns = [
     path('', vistas.RenderUserHome, name='home'),
 
     # Control de acceso
-    path('login/', vistas.RenderLogin, name='LogIn'),
+    path('login/', vistas.RenderLogin, name='Login'),
     path('register/', vistas.RenderRegister, name='Register'),
+    path('logout/', vistas.RenderLogout, name='LogOut'),
     
     # Usuario
     path('catalogo/', vistas.RenderUserCatalog, name='Catalog'),
@@ -23,21 +24,21 @@ urlpatterns = [
     path('home/admin/reportes/', vistas.RenderReport, name='Reportes'),
     path('home/admin/configuraciones/', vistas.RenderConfig, name='Config'),
 
-    #Proveedor
+        #Proveedor
     path('home/admin/config/proveedores/', vistas.RenderProveedores, name='proveedores'),
     path('home/admin/config/add-proveedor/', vistas.AddProveedor, name='addProveedor'),
     path('home/admin/config/edit-proveedor/<int:id>/', vistas.EditProveedor, name='editProveedor'),
     #Block/Unblock Proveedor
     path('home/admin/config/block-proveedor/<int:id>/', vistas.BlockProveedor, name='blockProveedor'),
     
-    #Producto
+        #Producto
     path('home/admin/config/productos/', vistas.RenderProducto, name='productos'),
     path('home/admin/config/add-producto/', vistas.AddProducto, name='addProducto'),
     path('home/admin/config/edit-producto/<int:id>/', vistas.EditProducto, name='editProducto'),
     #Block/Unblock Producto
     path('home/admin/config/productos/block-producto/<int:id>/', vistas.BlockProducto, name='blockProducto'),
 
-    #Categorias
+        #Categorias
     path('home/admin/config/productos/categorias/', vistas.RenderCategorias, name='categorias'),
     path('home/admin/config/productos/categorias/edit-categoria/<int:id>/', vistas.EditCategoria, name='editCategoria'),
     #Block/Unblock categoria
@@ -48,6 +49,7 @@ urlpatterns = [
     path('home/supervisor/panel/', vistas.RenderPanel, name='SupPanel'),
     path('home/supervisor/inventario/', vistas.RenderSupInventario, name='SupInvent'),
     path('home/supervisor/personal/', vistas.RenderSupPersonal, name='SupPersonal'),
+    
     # Vendedor
     path('home/vendedor/', vistas.RenderVenHome, name='VenHome'),
     path('home/vendedor/ventas/', vistas.RenderVentas, name='Ventas'),

@@ -1,18 +1,99 @@
 import datetime
+
+#SESSION
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import logout
+
+#HTTP
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
-from .models import Supervisor, Vendedor,Administrador , Roles, Producto, CategoriaProducto, Proveedor, Inventario
-# CamelCase Para las vistas
-# snake_case para lo interno
+
+#MODEL
+from .models import Usuario, Supervisor, Vendedor,Administrador , Roles, Producto, CategoriaProducto, Proveedor, Inventario
+
+
+#DECORADORES DE SESSION
+def admin_required(view_func):
+    def wrapper(request, *args, **kwargs):
+        # rol_id se basan en los de bd
+        if request.session.get('user_id') and request.session.get('rol_id') == '1':
+            return view_func(request, *args, **kwargs)
+        return redirect('Login')  # Redirige al login si no es admin
+    return wrapper
+
+def vendedor_required(view_func):
+    def wrapper(request, *args, **kwargs):
+        if request.session.get('user_id') and request.session.get('rol_id') == '2':  # '2' para rol de vendedor
+            return view_func(request, *args, **kwargs)
+        return redirect('Login')
+    return wrapper
+
+def supervisor_required(view_func):
+    def wrapper(request, *args, **kwargs):
+        if request.session.get('user_id') and request.session.get('rol_id') == '3':  # '3' para rol de supervisor
+            return view_func(request, *args, **kwargs)
+        return redirect('Login')
+    return wrapper
 
 # Control de Acceso
+def RenderLogout(request):
+    logout(request)  # Limpia la sesión del usuario
+    return redirect('Login')
+
 def RenderLogin(request):
     if request.method == "POST":
-        pass
+        has_error = {}
+        chars_restringidos_user = [
+            ' ', '..', '(', ')', '<', '>', '[',
+            ']', ',', ';', ':', '"', '@'
+            ]
+        
+        username = request.POST.get('username')
+
+        if username.strip() == "":
+            has_error['username_empty'] = 'El Campo Usuario no Puede Estar Vacio'
+        elif len(username) > 255:
+            has_error['username_max_char'] = 'Se ha Superado el MAXIMO de Caracteres, MAXIMO Permitido: 255'
+        else:
+            invalid_char = []
+            for char in username:
+                if char in chars_restringidos_user:
+                    invalid_char.append(char)
+            if len(invalid_char) > 0:
+                invalid_char_str = ', '.join(set(invalid_char))
+                has_error['username_char_error'] = 'Caracter no Valido: {}.'.format(invalid_char_str)
+        
+        password = request.POST.get('password')
+        if password.strip() == "":
+            has_error['password_empty'] = 'El Campo Contraseña no Puede Estar Vacio'
+        elif len(password) > 128:
+            has_error['password_max_char'] = 'Se ha Superado el MAXIMO de Caracteres, MAXIMO Permitido: 128'
+            
+        if not has_error:
+            try:
+                user = Usuario.objects.get(username=username)
+                if user.check_password(password):
+                    # SESSION DATA
+                    request.session['user_id'] = user.id
+                    request.session['username'] = user.username
+                    request.session['rol_id'] = str(user.rol.id)  
+
+                    if user.rol.id == 1:
+                        return redirect('AdminHome')
+                    elif user.rol.id == 2:
+                        return redirect('VenHome')
+                    elif user.rol.id == 3:
+                        return redirect('SupHome')
+                else:
+                    has_error['cred_error'] = 'Las Credenciales no Coinciden'
+            except Usuario.DoesNotExist:
+                has_error['user_error'] = 'Usuario no Encontrado'
+        return render(request, 'shared/login.html', {'errores': has_error})
 
     elif request.method == "GET":
         return render(request, 'shared/login.html')
 
+@admin_required
 def RenderRegister(request):
     roles = Roles.objects.all()
     vendedores = Vendedor.objects.all()
@@ -177,26 +258,32 @@ def RenderFAQ(request):
     return render(request, 'usuario/faq.html')
 
 # Admin
+@admin_required
 def RenderAdminHome(request):
     return render(request, 'admin/views/indexAdmin.html')
 
+@admin_required
 def RenderTrabajadores(request):
     return render(request, 'admin/views/trabajadores.html')
 
+@admin_required
 def RenderReport(request):
     # FALTA CONCRETAR LOS REPORTES (QUE SE MANDA Y COMO DEPENDIENDO DE CADA TIPO)
     return render(request, 'admin/views/reportes.html')
 
+@admin_required
 def RenderConfig(request):
     if request.method == 'GET':
         return render(request, 'admin/views/configTienda.html')
 
 # Proveedores
+@admin_required
 def RenderProveedores(request):
     proveedores = Proveedor.objects.all()
     if request.method == 'GET':
         return render(request, 'admin/proveedores/proveedores.html', {'proveedores': proveedores})
 
+@admin_required
 def AddProveedor(request):
     if request.method == 'POST':
         has_error = {}
@@ -267,6 +354,7 @@ def AddProveedor(request):
     elif request.method == 'GET':
         return render(request, 'admin/proveedores/addProveedor.html')
 
+@admin_required
 def EditProveedor(request, id):
     proveedor = get_object_or_404(Proveedor, id=id)
     if request.method == 'POST':
@@ -347,6 +435,7 @@ def EditProveedor(request, id):
 
         return render(request, 'admin/proveedores/addProveedor.html', {'proveedor': proveedor, 'correo': local, 'dominio': dominio})
 
+@admin_required
 def BlockProveedor(request, id):
     if request.method == 'GET':
         proveedor = get_object_or_404(Proveedor, id=id)
@@ -367,6 +456,7 @@ def BlockProveedor(request, id):
 
 
 # Categorias
+@admin_required
 def RenderCategorias(request):
     categorias = CategoriaProducto.objects.all()
     if request.method == 'POST':
@@ -390,6 +480,7 @@ def RenderCategorias(request):
     elif request.method == 'GET':
         return render(request, 'admin/productos/categorias/categorias.html', {'categorias': categorias})
 
+@admin_required
 def EditCategoria(request, id):
     categorias = CategoriaProducto.objects.all()
     categoria = get_object_or_404(CategoriaProducto, id=id)
@@ -422,7 +513,8 @@ def EditCategoria(request, id):
             'categorias': categorias,
             'editable': categoria
         })
-    
+
+@admin_required 
 def BlockCategoria(request, id):
     if request.method == 'GET':
         categoria = CategoriaProducto.objects.get(id=id)
@@ -441,12 +533,13 @@ def BlockCategoria(request, id):
             except:
                 return HttpResponse("Error al Habilitar la Categoria: {}".format(categoria.nombre), status=404)        
 
-# Productos
+@admin_required
 def RenderProducto(request):
     productos = Producto.objects.all()
     if request.method == 'GET':
         return render(request, 'admin/productos/productos.html', {'productos': productos})
-   
+
+@admin_required 
 def AddProducto(request):
     categorias = CategoriaProducto.objects.all()
     proveedores = Proveedor.objects.all()
@@ -528,6 +621,7 @@ def AddProducto(request):
     elif request.method == 'GET':
         return render(request, 'admin/productos/addProducto.html', {'categorias': categorias, 'proveedores': proveedores})
 
+@admin_required
 def EditProducto(request, id):
     producto = get_object_or_404(Producto, id=id)
     categorias = CategoriaProducto.objects.all()
@@ -622,6 +716,7 @@ def EditProducto(request, id):
         })
 
 # Manejo de Producto / Para no eliminar registros
+@admin_required
 def BlockProducto(request, id):
     if request.method == 'GET':
         producto = Producto.objects.get(id=id)
@@ -641,21 +736,27 @@ def BlockProducto(request, id):
                 return HttpResponse("Error al habilitar el producto: {}".format(producto.nombre), status=404)        
 
 # Supervisor
+@supervisor_required
 def RenderSupHome(request):
     return render(request, 'supervisor/indexSuper.html')
 
+@supervisor_required
 def RenderPanel(request):
     return render(request, 'supervisor/panel.html')
 
+@supervisor_required
 def RenderSupInventario(request):
     return render(request, 'supervisor/inventario.html')
 
+@supervisor_required
 def RenderSupPersonal(request):
     return render(request, 'supervisor/personal.html')
 
 # Vendedor
+@vendedor_required
 def RenderVenHome(request):
     return render(request, 'vendedor/indexVendedor.html')
 
+@vendedor_required
 def RenderVentas(request):
     return render(request, 'vendedor/ventas.html')

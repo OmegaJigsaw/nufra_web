@@ -9,6 +9,12 @@
 </a>
 {% endblock %}
 
+
+{% block home %}
+<a href="{% url 'home' %}">
+    <i class="fa-solid fa-house-user fa-2x" style="color: white;"></i>
+</a>
+{% endblock %}
 {% block navitems %}
 <li class="nav-item">
     <a href="{% url 'AdminHome' %}" class="nav-link">Inicio</a>
