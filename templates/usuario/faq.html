@@ -1,83 +1,84 @@
 {% extends 'shared/baseIndex.html' %}
 {% load static %}
 
-{% block title %}Catalogo{% endblock %}
+{% block title %}Preguntas Frecuentes (FAQ){% endblock %}
 
 {% block brand %}
-<a href="{% url 'home' %}" class="navbar-brand">
-    <img class="img-fluid d-block mx-auto" style="max-height: 5rem;" src="{% static '/images/Logo.png' %}" alt="Logo">
+<a href="{% url 'home' %}" class="navbar-brand d-flex align-items-center">
+    <img class="img-fluid d-block mx-auto" style="max-height: 5rem;" src="{% static 'images/Logo.png' %}" alt="Logo de la tienda de confites">
 </a>
-    
 {% endblock %}
 
 {% block navitems %}
     <li class="nav-item">
-        <a href="{% url 'home' %}" class="nav-link">Inicio</a>
+        <a href="{% url 'home' %}" class="nav-link text-decoration-underline">Inicio</a>
     </li>
     <li class="nav-item">
-        <a href="{% url 'Catalog' %}" class="nav-link">Catalogo</a>
+        <a href="{% url 'Catalog' %}" class="nav-link text-decoration-underline">Catálogo</a>
     </li>
     <li class="nav-item">
-        <a href="{% url 'About' %}" class="nav-link">Acerca de</a>
+        <a href="{% url 'About' %}" class="nav-link text-decoration-underline">Acerca de</a>
     </li>
     <li class="nav-item">
-        <a href="{% url 'FAQ' %}" class="nav-link">FAQ</a>
+        <a href="{% url 'FAQ' %}" class="nav-link text-decoration-underline">FAQ</a>
     </li>
 {% endblock %}
 
 {% block content %}
-<div class="faq-container">
-    <h1 class="text-center">Preguntas Frecuentes (FAQ)</h1>
-    <div class="col ms-3">
-        <div class="faq-item">
-            <h2>1. ¿Cuál es el objetivo de [tu servicio/producto]?</h2>
-            <p>Respuesta: [Aquí puedes incluir una breve descripción del propósito de tu servicio o producto y cómo puede ayudar a los usuarios.]</p>
+<section class="faq-container py-5 bg-light">
+    <h1 class="text-center text-danger fw-bold mb-5" style="font-family: 'Comic Sans MS', cursive, sans-serif;">Preguntas Frecuentes (FAQ)</h1>
+    <div class="col mx-auto" style="max-width: 800px;">
+
+        <div class="faq-item p-4 mb-4 rounded-3 shadow-sm" style="background-color: #ffe6e6; border-left: 5px solid #ff9999;">
+            <h2 class="fw-bold text-dark mb-3" style="font-size: 1.25rem;">1. ¿Cuál es el objetivo de [tu servicio/producto]?</h2>
+            <p class="text-muted ms-3" style="line-height: 1.6;">Respuesta: Aquí puedes incluir una breve descripción del propósito de tu servicio o producto y cómo puede ayudar a los usuarios.</p>
         </div>
-    
-        <div class="faq-item">
-            <h2>2. ¿Cómo puedo crear una cuenta?</h2>
-            <p>Respuesta: [Proporciona pasos claros sobre cómo los usuarios pueden registrarse, incluyendo cualquier información que necesiten.]</p>
+        
+        <div class="faq-item p-4 mb-4 rounded-3 shadow-sm" style="background-color: #ffe6e6; border-left: 5px solid #ff9999;">
+            <h2 class="fw-bold text-dark mb-3" style="font-size: 1.25rem;">2. ¿Cómo puedo crear una cuenta?</h2>
+            <p class="text-muted ms-3" style="line-height: 1.6;">Respuesta: Proporciona pasos claros sobre cómo los usuarios pueden registrarse, incluyendo cualquier información que necesiten.</p>
         </div>
-    
-        <div class="faq-item">
-            <h2>3. ¿Olvidé mi contraseña, ¿qué debo hacer?</h2>
-            <p>Respuesta: [Explica el proceso para restablecer la contraseña, incluyendo enlaces o botones necesarios.]</p>
+
+        <div class="faq-item p-4 mb-4 rounded-3 shadow-sm" style="background-color: #ffe6e6; border-left: 5px solid #ff9999;">
+            <h2 class="fw-bold text-dark mb-3" style="font-size: 1.25rem;">3. ¿Olvidé mi contraseña, ¿qué debo hacer?</h2>
+            <p class="text-muted ms-3" style="line-height: 1.6;">Respuesta: Explica el proceso para restablecer la contraseña, incluyendo enlaces o botones necesarios.</p>
         </div>
-    
-        <div class="faq-item">
-            <h2>4. ¿Qué métodos de pago aceptan?</h2>
-            <p>Respuesta: [Enumera los métodos de pago disponibles, como tarjetas de crédito, PayPal, etc.]</p>
+
+        <div class="faq-item p-4 mb-4 rounded-3 shadow-sm" style="background-color: #ffe6e6; border-left: 5px solid #ff9999;">
+            <h2 class="fw-bold text-dark mb-3" style="font-size: 1.25rem;">4. ¿Qué métodos de pago aceptan?</h2>
+            <p class="text-muted ms-3" style="line-height: 1.6;">Respuesta: Enumera los métodos de pago disponibles, como tarjetas de crédito, PayPal, etc.</p>
         </div>
-    
-        <div class="faq-item">
-            <h2>5. ¿Puedo cancelar mi suscripción?</h2>
-            <p>Respuesta: [Indica si es posible cancelar la suscripción, los pasos a seguir y cualquier política de reembolso aplicable.]</p>
+
+        <div class="faq-item p-4 mb-4 rounded-3 shadow-sm" style="background-color: #ffe6e6; border-left: 5px solid #ff9999;">
+            <h2 class="fw-bold text-dark mb-3" style="font-size: 1.25rem;">5. ¿Puedo cancelar mi suscripción?</h2>
+            <p class="text-muted ms-3" style="line-height: 1.6;">Respuesta: Indica si es posible cancelar la suscripción, los pasos a seguir y cualquier política de reembolso aplicable.</p>
         </div>
-    
-        <div class="faq-item">
-            <h2>6. ¿Cómo puedo contactar al servicio de atención al cliente?</h2>
-            <p>Respuesta: [Proporciona información sobre cómo los usuarios pueden ponerse en contacto con el soporte, como un número de teléfono, correo electrónico o un formulario en línea.]</p>
+
+        <div class="faq-item p-4 mb-4 rounded-3 shadow-sm" style="background-color: #ffe6e6; border-left: 5px solid #ff9999;">
+            <h2 class="fw-bold text-dark mb-3" style="font-size: 1.25rem;">6. ¿Cómo puedo contactar al servicio de atención al cliente?</h2>
+            <p class="text-muted ms-3" style="line-height: 1.6;">Respuesta: Proporciona información sobre cómo los usuarios pueden ponerse en contacto con el soporte, como un número de teléfono, correo electrónico o un formulario en línea.</p>
         </div>
-    
-        <div class="faq-item">
-            <h2>7. ¿Dónde puedo encontrar más información sobre [tu producto/servicio]?</h2>
-            <p>Respuesta: [Incluir enlaces a recursos adicionales, como tutoriales, documentación o foros de usuarios.]</p>
+
+        <div class="faq-item p-4 mb-4 rounded-3 shadow-sm" style="background-color: #ffe6e6; border-left: 5px solid #ff9999;">
+            <h2 class="fw-bold text-dark mb-3" style="font-size: 1.25rem;">7. ¿Dónde puedo encontrar más información sobre [tu producto/servicio]?</h2>
+            <p class="text-muted ms-3" style="line-height: 1.6;">Respuesta: Incluir enlaces a recursos adicionales, como tutoriales, documentación o foros de usuarios.</p>
         </div>
-    
-        <div class="faq-item">
-            <h2>8. ¿Qué hacer si tengo un problema técnico?</h2>
-            <p>Respuesta: [Describe cómo los usuarios pueden resolver problemas técnicos y qué pasos deben seguir para obtener ayuda.]</p>
+
+        <div class="faq-item p-4 mb-4 rounded-3 shadow-sm" style="background-color: #ffe6e6; border-left: 5px solid #ff9999;">
+            <h2 class="fw-bold text-dark mb-3" style="font-size: 1.25rem;">8. ¿Qué hacer si tengo un problema técnico?</h2>
+            <p class="text-muted ms-3" style="line-height: 1.6;">Respuesta: Describe cómo los usuarios pueden resolver problemas técnicos y qué pasos deben seguir para obtener ayuda.</p>
         </div>
-    
-        <div class="faq-item">
-            <h2>9. ¿Cómo se manejan mis datos personales?</h2>
-            <p>Respuesta: [Asegúrate de abordar las preocupaciones sobre la privacidad y la seguridad de los datos, mencionando tu política de privacidad.]</p>
+
+        <div class="faq-item p-4 mb-4 rounded-3 shadow-sm" style="background-color: #ffe6e6; border-left: 5px solid #ff9999;">
+            <h2 class="fw-bold text-dark mb-3" style="font-size: 1.25rem;">9. ¿Cómo se manejan mis datos personales?</h2>
+            <p class="text-muted ms-3" style="line-height: 1.6;">Respuesta: Asegúrate de abordar las preocupaciones sobre la privacidad y la seguridad de los datos, mencionando tu política de privacidad.</p>
         </div>
-    
-        <div class="faq-item">
-            <h2>10. ¿Hay alguna promoción o descuento disponible?</h2>
-            <p>Respuesta: [Si aplicable, proporciona información sobre ofertas actuales o cómo los usuarios pueden obtener descuentos.]</p>
+
+        <div class="faq-item p-4 mb-4 rounded-3 shadow-sm" style="background-color: #ffe6e6; border-left: 5px solid #ff9999;">
+            <h2 class="fw-bold text-dark mb-3" style="font-size: 1.25rem;">10. ¿Hay alguna promoción o descuento disponible?</h2>
+            <p class="text-muted ms-3" style="line-height: 1.6;">Respuesta: Si aplicable, proporciona información sobre ofertas actuales o cómo los usuarios pueden obtener descuentos.</p>
         </div>
+
     </div>
-</div>
+</section>
 {% endblock %}
