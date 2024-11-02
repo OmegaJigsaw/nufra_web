@@ -37,7 +37,6 @@
                     <a href="{% url 'Config' %}" class="btn btn-primary">Volver</a>
                     <a href="{% url 'categorias' %}" class="btn btn-primary">Categorías</a>
                 </div>
-<<<<<<< HEAD
                 <div class="col text-end">
                     <a href="{% url 'addProducto' %}" class="btn btn-primary">Agregar Producto</a>
                 </div>
@@ -58,36 +57,10 @@
                 </thead>
                 <tbody id="tableBody">
                     {% if productos %}
-=======
-                {% endif %}
-                <table class="table table-hover">
-                    <thead>
-                        <tr>
-                            <th>Imagen</th>
-                            <th>Nombre</th>
-                            <th>Categoria</th>
-                            <th>Descripcion</th>
-                            <th>Precio Unitario</th>
-                            <th>Proveedor</th>
-                            <th>Fecha Ingreso</th>
-                            <th>Disponibilidad</th>
-                            <th>Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tableBody">
-                        {% if not productos %}
-                        <tr id="emptyRow">
-                          <td colspan="9" class="text-center">
-                            <a href="{% url 'addProducto' %}" class="btn btn-primary">+</a>
-                          </td>
-                        </tr>
-                        {% else %}
->>>>>>> dd44d15996b2dd8ca11163cf0268d05997afe7f2
                         {% for i in productos %}
                         <tr>
                             <td>
                                 {% if i.imagen %}
-<<<<<<< HEAD
                                     <img src="{{ i.imagen.url }}" alt="Imagen Producto" class="img-fluid" style="max-height: 100px;">
                                 {% else %}
                                     <span class="text-danger">No hay imagen del Producto</span>
@@ -99,19 +72,6 @@
                             <td>{{ i.precio_unitario }}</td>
                             <td>{{ i.proveedor.nombre }}</td>
                             <td>{{ i.fecha_ingreso }}</td>
-=======
-                                <img src="{{ i.imagen.url }}" alt="Imagen Producto" class="img-fluid">
-                                {% else %}
-                                <span class="text-danger">No hay imagen del Producto</span>
-                                {% endif %}
-                            </td>
-                            <td>{{i.nombre}}</td>
-                            <td>{{i.categoria.nombre}}</td>
-                            <td>{{i.descripcion}}</td>
-                            <td>{{i.precio_unitario}}</td>
-                            <td>{{i.proveedor.nombre}}</td>
-                            <td>{{i.fecha_ingreso}}</td>
->>>>>>> dd44d15996b2dd8ca11163cf0268d05997afe7f2
                             <td>{% if i.disponible %}Disponible{% else %}No Disponible{% endif %}</td>
                             <td>
                                 <a href="{% url 'editProducto' i.id %}" class="btn btn-primary">Editar</a>
@@ -126,7 +86,6 @@
                             </td>
                         </tr>
                     {% endif %}
-                    
                 </tbody>
             </table>
         </div>
