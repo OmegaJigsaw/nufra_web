@@ -1,4 +1,4 @@
-{% extends 'shared/baseIndex.html'%}
+{% extends 'shared/baseIndex.html' %}
 {% load static %}
 
 {% block title %}Panel de Control{% endblock %}
@@ -17,26 +17,26 @@
     <a href="{% url 'SupPanel' %}" class="nav-link">Panel de Control</a>
 </li>
 <li class="nav-item">
-    <a href="{% url 'SupInvent' %}" class="nav-link">Gestion de Inventario</a>
+    <a href="{% url 'SupInvent' %}" class="nav-link">Gestión de Inventario</a>
 </li>
 <li class="nav-item">
-    <a href="{% url 'SupPersonal' %}" class="nav-link">Gestion Personal</a>
+    <a href="{% url 'SupPersonal' %}" class="nav-link">Gestión Personal</a>
 </li>
 {% endblock %}
 
 {% block content %}
-<div class="container">
+<div class="container mt-4">
     <div class="row mt-3">
         <div class="col">
-            <h4 class="h4" style="border-bottom: solid;">Resumen de Ventas</h4>
-            <table class="table">
+            <h4 class="h4 text-center" style="border-bottom: solid;">Resumen de Ventas</h4>
+            <table class="table table-hover">
                 <thead>
                     <tr>
                         <th>Nro de Venta</th>
                         <th>Cliente</th>
                         <th>Valor</th>
                         <th>Estado</th>
-                        <th>Accion</th>
+                        <th>Acción</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -45,10 +45,11 @@
             </table>
         </div>
     </div>
-    <div class="row mt-3">
+    
+    <div class="row mt-4">
         <div class="col">
-            <h4 class="h4" style="border-bottom: solid;">Resumen de Facturas</h4>
-            <table class="table">
+            <h4 class="h4 text-center" style="border-bottom: solid;">Resumen de Facturas</h4>
+            <table class="table table-hover">
                 <thead>
                     <tr>
                         <th>Nro de Pedido</th>
@@ -56,7 +57,7 @@
                         <th>Producto</th>
                         <th>Cantidad</th>
                         <th>Estado</th>
-                        <th>Accion</th>
+                        <th>Acción</th>
                     </tr>
                 </thead>
                 <tbody>

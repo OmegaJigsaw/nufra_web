@@ -17,57 +17,59 @@
     <a href="{% url 'SupPanel' %}" class="nav-link">Panel de Control</a>
 </li>
 <li class="nav-item">
-    <a href="{% url 'SupInvent' %}" class="nav-link">Gestion de Inventario</a>
+    <a href="{% url 'SupInvent' %}" class="nav-link">Gestión de Inventario</a>
 </li>
 <li class="nav-item">
-    <a href="{% url 'SupPersonal' %}" class="nav-link">Gestion Personal</a>
+    <a href="{% url 'SupPersonal' %}" class="nav-link">Gestión Personal</a>
 </li>
 {% endblock %}
 
 {% block content %}
-<div class="container">
+<div class="container mt-4">
     <div class="row mt-3">
-        <h4 class="h4" style="border-bottom: solid;">Inventario Actual</h4>
+        <h4 class="h4 text-center" style="border-bottom: solid;">Inventario Actual</h4>
+        
         {% if inventario %}
             <div class="row">
                 <div class="col text-end">
-                    <a href="{% url 'addInventario' %}" class="btn btn-primary mx-auto">+</a>
+                    <a href="{% url 'addInventario' %}" class="btn btn-primary mx-auto">Agregar Producto +</a>
                 </div>
-                </div>
+            </div>
         {% endif %}
-        <div class="table table-responsive mt-3">
-            <table class="table">
+        
+        <div class="table-responsive mt-3">
+            <table class="table table-hover">
                 <thead>
                     <tr>
-                        <th>Codigo</th>
+                        <th>Código</th>
                         <th>Producto</th>
                         <th>Stock</th>
                         <th>Estado</th>
                         <th>Precio Unitario</th>
-                        <th>Estado</th>
-                        <th>Accion</th>
+                        <th>Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% if not inventario %}
                     <tr id="emptyRow">
                         <td colspan="6" class="text-center">
-                          <a href="{% url 'addInventario' %}" class="btn btn-primary">+</a>
+                          No hay productos en el inventario.
+                          <div class="mt-2">
+                              <a href="{% url 'addInventario' %}" class="btn btn-primary">Agregar Producto +</a>
+                          </div>
                         </td>
                     </tr>
                     {% else %}
                     {% for i in inventario %}
                     <tr>
-                        <td>{{i.producto.id}}</td>
-                        <td>{{i.nombre}}</td>
-                        <td>{{i.stock_actual}}</td>
-                        <td>{{i.descripcion}}</td>
-                        <td>{{i.producto.precio_unitario}}</td>
-                        <td>{{i.estado}}</td>
+                        <td>{{ i.producto.id }}</td>
+                        <td>{{ i.nombre }}</td>
+                        <td>{{ i.stock_actual }}</td>
+                        <td>{{ i.estado }}</td>
+                        <td>${{ i.producto.precio_unitario|floatformat:2 }}</td>
                         <td>
-                            <a href="#" class="btn btn-primary"></a>
-                            <a href="#" class="btn btn-primary"></a>
-                            <a href="#" class="btn btn-primary"></a>
+                            <a href="{% url 'edit_producto' i.producto.id %}" class="btn btn-warning btn-sm">Editar</a>
+                            <a href="{% url 'delete_producto' i.producto.id %}" class="btn btn-danger btn-sm">Eliminar</a>
                         </td>
                     </tr>
                     {% endfor %}
@@ -75,5 +77,12 @@
                 </tbody>
             </table>
         </div>
+        
+        {% if inventario %}
+        <div class="text-end mt-2">
+            <a href="{% url 'addInventario' %}" class="btn btn-primary">Agregar Producto +</a>
+        </div>
+        {% endif %}
     </div>
+</div>
 {% endblock %}
