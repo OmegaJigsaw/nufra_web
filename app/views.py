@@ -746,7 +746,64 @@ def RenderPanel(request):
 
 @supervisor_required
 def RenderSupInventario(request):
-    return render(request, 'supervisor/inventario.html')
+    inventario = Inventario.objects.all()
+    return render(request, 'supervisor/inventario.html', {'inventario': inventario})
+
+@supervisor_required
+def AddInventario(request):
+    productos = Producto.objects.all()
+    inventario = Inventario.objects.all()
+    has_error = {}
+    if request.method == 'POST':
+        producto_id = request.POST.get('producto')
+        stock = request.POST.get('stock_actual')
+        descripcion = request.POST.get('descripcion')
+        fecha = request.POST.get('fecha_actualizacion')
+
+    # Validaciones
+        if producto_id == '-1':
+            has_error['producto_empty'] = "Debe seleccionar un producto."
+        
+        if not stock:
+            has_error['stock_empty'] = "El stock no puede estar vacío."
+        elif not stock.isdigit() or int(stock) < 0:
+            has_error['stock_invalid'] = "El stock debe ser un número positivo."
+
+        if not descripcion:
+            has_error['descripcion_empty'] = "La descripción no puede estar vacía."
+
+        if not fecha:
+            has_error['fecha_empty'] = "La fecha de actualización es obligatoria."
+        else:
+            try:
+                fecha_valida = datetime.datetime.strptime(fecha, "%Y-%m-%d").date()
+                if fecha_valida > datetime.date.today():
+                    has_error['future_date'] = 'La Fecha de Ingreso NO Puede Estar en el FUTURO'
+            except ValueError:
+                has_error['invalid_date'] = 'Fecha Ingresada Invalida'
+        
+        if not has_error:
+            producto = Producto.objects.get(id=producto_id)
+            nuevo_inventario = Inventario(
+                producto=producto,
+                nombre=producto.nombre,
+                stock_actual=int(stock),
+                descripcion=descripcion,
+                fecha_actualizacion=fecha
+            )
+            nuevo_inventario.save()
+            return redirect('SupInvent') 
+    
+    elif request.method == 'GET':
+        return render(request, 'supervisor/inventario/addInventario.html', {'productos': productos, 'inventario': inventario})
+    
+@supervisor_required
+def EditInventario(request):
+    if request.method == 'POST':
+        pass
+    
+    elif request.method == 'GET':
+        return render(request, 'supervisor/inventario/editInventario.html')
 
 @supervisor_required
 def RenderSupPersonal(request):

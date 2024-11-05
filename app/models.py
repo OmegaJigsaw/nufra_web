@@ -65,6 +65,7 @@ class Inventario(models.Model):
     stock_actual = models.IntegerField()
     descripcion = models.TextField()
     fecha_actualizacion = models.DateField()
+    estado = models.CharField(max_length=30, default='Disponible')
 
 # Tablas Vendedor
 class Vendedor(Usuario):
