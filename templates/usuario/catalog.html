@@ -26,25 +26,25 @@
 
 {% block content %}
 <section class="catalog-container py-5 bg-light">
-    <h1 class="text-center text-danger fw-bold mb-5" style="font-family: 'Comic Sans MS', cursive, sans-serif;">Catálogo</h1>
+    <h1 class="text-center text-danger fw-bold mb-5" style="font-family: 'Lora', serif;">Catálogo</h1>
     <div class="container">
         {% if categorias %}
             {% for categoria in categorias %}
                 <div class="row mb-4">
-                    <h2 class="text-dark fw-bold" style="border-bottom: solid 2px #ff9999;">{{ categoria.nombre }}</h2>
+                    <h2 class="text-dark fw-bold" style="border-bottom: solid 2px #4A4063; font-family: 'Lora', serif;">{{ categoria.nombre }}</h2>
                     {% if productos %}
                         <div class="col">
                             <div class="d-flex overflow-auto flex-nowrap">
                                 {% for producto in productos %}
                                     {% if producto.categoria.id == categoria.id %}
-                                        <div class="card mx-2 shadow-sm" style="min-width: 150px; max-width: 200px; border: 1px solid #ff9999;">
+                                        <div class="card mx-2 shadow-sm" style="min-width: 150px; max-width: 200px; border: 1px solid #4A4063;">
                                             <div class="card-body text-center">
                                                 <a href="#">
                                                     <img src="{{ producto.imagen.url }}" alt="Imagen de {{ producto.nombre }}" class="img-fluid" style="height: 10rem;">
                                                 </a>
                                             </div>
                                             <div class="card-footer text-center">
-                                                <p class="card-title mb-0" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ producto.nombre }}</p>
+                                                <p class="card-title mb-0" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-family: 'Open Sans', sans-serif;">{{ producto.nombre }}</p>
                                             </div>
                                         </div>
                                     {% endif %}
@@ -52,12 +52,12 @@
                             </div>
                         </div>
                     {% else %}
-                        <h2 class="text-danger">No Hay Productos Disponibles</h2>
+                        <h2 class="text-danger" style="font-family: 'Open Sans', sans-serif;">No Hay Productos Disponibles</h2>
                     {% endif %}
                 </div>
             {% endfor %}
         {% else %}
-            <h2 class="text-danger">No Hay Categorías Disponibles</h2>
+            <h2 class="text-danger" style="font-family: 'Open Sans', sans-serif;">No Hay Categorías Disponibles</h2>
         {% endif %}
     </div>
 </section>

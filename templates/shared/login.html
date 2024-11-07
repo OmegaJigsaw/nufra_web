@@ -5,7 +5,9 @@
 
 {% block header %}
     <div class="container-fluid text-center py-5" style="background-color: #4A4063;">
-        <img class="img-fluid d-block mx-auto" style="max-height: 6rem;" src="{% static '/images/Logo.png' %}" alt="Logo">
+        <a href="{% url 'home' %}">
+            <img class="img-fluid d-block mx-auto" style="max-height: 6rem;" src="{% static '/images/Logo.png' %}" alt="Logo">
+        </a>
     </div>
 {% endblock %}
 
