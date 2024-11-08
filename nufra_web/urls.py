@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.conf import settings
 from django.conf.urls.static import static
-from django.urls import path
+from django.urls import include, path
 from app import views as vistas
 from django.urls import re_path
 from rest_framework import permissions
@@ -71,18 +71,19 @@ urlpatterns = [
 
         #Inventario
     path('home/supervisor/inventario/add/', vistas.AddInventario, name='addInventario'),
-    path('home/supervisor/inventario/edit/<int:id>', vistas.AddInventario, name='editInventario'),
+    path('home/supervisor/inventario/edit/<int:id>', vistas.EditInventario, name='editInventario'),
     
     path('home/supervisor/personal/', vistas.RenderSupPersonal, name='SupPersonal'),
     
     # Vendedor
     path('home/vendedor/', vistas.RenderVenHome, name='VenHome'),
     path('home/vendedor/ventas/', vistas.RenderVentas, name='Ventas'),
+        # CARRO
+    path('home/vendedor/ventas/carro', vistas.AgregarCarrito, name='addCarrito'),
 
+    # DOCUMENTACION
     path('swagger<format>/', schema_view.without_ui(cache_timeout=0), name='schema-json'),
     path('docs/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
 
-
-    
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

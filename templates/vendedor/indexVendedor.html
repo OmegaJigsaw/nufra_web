@@ -34,13 +34,12 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <!-- Aquí se debe incluir la lógica para iterar y mostrar productos en la base de datos -->
-                    {% for producto in inventario %}
+                    {% for i in inventario %}
                     <tr>
-                        <td>{{ producto.codigo }}</td>
-                        <td>{{ producto.nombre }}</td>
-                        <td>{{ producto.categoria }}</td>
-                        <td>{{ producto.stock }}</td>
+                        <td>{{ i.producto.id }}</td>
+                        <td>{{ i.nombre }}</td>
+                        <td>{{ i.producto.categoria.nombre }}</td>
+                        <td>{{ i.stock_actual }}</td>
                     </tr>
                     {% empty %}
                     <tr>

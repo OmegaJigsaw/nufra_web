@@ -22,7 +22,7 @@
     <div class="container">
         <div class="row mt-3">
             <h4 class="h4" style="border-bottom: solid;">Ventas Nuevas</h4>
-            <form action="" method="POST">
+            <form action="{% url 'addCarrito' %}" method="POST">
                 {% csrf_token %}
                 <div class="row">
                     <div class="col-3">
@@ -40,10 +40,11 @@
 
         <div class="row mt-3">
             <h5 class="h5" style="border-bottom: solid;">En el carro actual</h5>
-            <form action="" method="POST">
+            <form action="{% url 'Ventas' %}" method="POST">
+                {% csrf_token %}
                 <div class="col-3">
                     <label for="rut" class="form-label">Rut Cliente</label>
-                    <input type="text" name="rut" id="rut" class="form-control" maxlength="13" placeholder="Ingrese Rut del cliente">
+                    <input type="text" name="rut" id="rut" class="form-control" maxlength="13" placeholder="Rut cliente">
                 </div>
                 <table class="table mt-3">
                     <thead>
@@ -57,8 +58,20 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <!-- Iterar Carro de Compras -->
-                        <!-- Aquí se debe incluir la lógica para mostrar los productos en el carro -->
+                        {% for i in carrito %}
+                        <tr>
+                            <td>{{i.producto_id}}</td>
+                            <td>{{i.nombre}}</td>
+                            <td>{{i.cantidad}}</td>
+                            <td>{{i.precio}}</td>
+                            <td>{{i.subtotal}}</td>
+                            <td>
+                                <a href="#" class="btn btn-danger">
+                                    <i class="fa-regular fa-trash-can"></i>
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
                     </tbody>
                 </table>
                 <button type="submit" class="btn btn-primary mt-3">Confirmar Compra</button>
