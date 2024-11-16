@@ -80,6 +80,8 @@ urlpatterns = [
     path('home/vendedor/ventas/', vistas.RenderVentas, name='Ventas'),
         # CARRO
     path('home/vendedor/ventas/carro', vistas.AgregarCarrito, name='addCarrito'),
+    path('home/vendedor/ventas/detalle/<int:id>', vistas.RenderDetalle, name='detalle'),
+    path('home/vendedor/ventas/remove/<int:id>', vistas.DeleteItemCarro, name='deleteCarro'),
 
     # DOCUMENTACION
     path('swagger<format>/', schema_view.without_ui(cache_timeout=0), name='schema-json'),

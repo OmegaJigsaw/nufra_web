@@ -4,94 +4,151 @@
 {% block title %}Ventas{% endblock %}
 
 {% block brand %}
-<a href="{% url 'VenHome' %}" class="navbar-brand">
+<a href="{% url 'Ventas' %}" class="navbar-brand">
     <img class="img-fluid d-block mx-auto" style="max-height: 5rem;" src="{% static '/images/Logo.png' %}" alt="Logo">
 </a>
 {% endblock %}
 
+{% block home %}{% endblock %}
 {% block navitems %}
-<li class="nav-item">
-    <a href="{% url 'VenHome' %}" class="nav-link">Inicio</a>
-</li>
-<li class="nav-item">
-    <a href="{% url 'Ventas' %}" class="nav-link">Gestión Venta</a>
-</li>
+
 {% endblock %}
 
 {% block content %}
     <div class="container">
-        <div class="row mt-3">
-            <h4 class="h4" style="border-bottom: solid;">Ventas Nuevas</h4>
-            <form action="{% url 'addCarrito' %}" method="POST">
-                {% csrf_token %}
-                <div class="row">
-                    <div class="col-3">
-                        <label for="codigo" class="form-label">Código</label>
-                        <input type="number" name="codigo" id="codigo" class="form-control" placeholder="Ingrese código">
-                    </div>
-                    <div class="col-3">
-                        <label for="cantidad" class="form-label">Cantidad</label>
-                        <input type="number" name="cantidad" id="cantidad" class="form-control" placeholder="Ingrese cantidad">
+        <div class="row">
+            <div class="col-8">
+                <div class="row mt-3">
+                    <h4 class="h4" style="border-bottom: solid;">Ventas Nuevas</h4>
+                    <form action="{% url 'addCarrito' %}" method="POST">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-3">
+                                <label for="codigo" class="form-label">Código</label>
+                                <input type="number" name="codigo" id="codigo" class="form-control" placeholder="Ingrese código">
+                                {% if errores.incorrect_code %}
+                                <span class="text-danger">{{errores.incorrect_code}}</span>
+                                {% elif errores.stock_insuficiente %}
+                                <span class="text-danger">{{errores.stock_insuficiente}}</span>
+                                {% endif %}
+                            </div>
+                            <div class="col-3">
+                                <label for="cantidad" class="form-label">Cantidad</label>
+                                <input type="number" name="cantidad" id="cantidad" class="form-control" placeholder="Ingrese cantidad">
+                                {% if errores.cantidad_value_error %}
+                                <span class="text-danger">{{errores.cantidad_value_error}}</span>
+                                {% endif %}
+                            </div>
+                            {% if errores.producto_404 %}
+                            <span class="text-danger">{{errores.producto_404}}</span>
+                            {% elif errores.inventario_404 %}
+                            <span class="text-danger">{{errores.inventario_404}}</span>
+                            {% endif %}
+                        </div>
+                        <button type="submit" class="btn btn-primary mt-3">Agregar Carro</button>
+                    </form>
+                </div>
+        
+                <div class="row mt-3">
+                    <h5 class="h5" style="border-bottom: solid;">En el carro actual</h5>
+                    <form action="{% url 'Ventas' %}" method="POST">
+                        {% csrf_token %}
+                        <div class="col-3">
+                            <label for="rut" class="form-label">Rut Cliente</label>
+                            <input type="text" name="rut" id="rut" class="form-control" maxlength="13" placeholder="Rut cliente">
+                            {% if errores.rut_vacio %}
+                            <span class="text-danger">{{errores.rut_vacio}}</span>
+                            {% endif %}
+                        </div>
+                        <table class="table mt-3">
+                            <thead>
+                                <tr>
+                                    <th>Código</th>
+                                    <th>Producto</th>
+                                    <th>Cantidad</th>
+                                    <th>Precio Unitario</th>
+                                    <th>Precio Total</th>
+                                    <th>Acción</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for i in carrito %}
+                                <tr>
+                                    <td>{{i.producto_id}}</td>
+                                    <td>{{i.nombre}}</td>
+                                    <td>{{i.cantidad}}</td>
+                                    <td>{{i.precio}}</td>
+                                    <td>{{i.subtotal}}</td>
+                                    <td>
+                                        <a href="{% url 'deleteCarro' i.producto_id %}" class="btn btn-danger">
+                                            <i class="fa-regular fa-trash-can"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                        <button type="submit" class="btn btn-primary mt-3">Confirmar Compra</button>
+                    </form>
+                </div>
+        
+                <div class="row mt-3">
+                    <h4 class="h4" style="border-bottom: solid;">Historial de Ventas</h4>
+                    <div class="col mt-3">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Nro</th>
+                                    <th>vendedor</th>
+                                    <th>Rut Cliente</th>
+                                    <th>Fecha</th>
+                                    <th>Total</th>
+                                    <th>Estado</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for i in ventas %}
+                                <tr>
+                                    <td>{{ i.nro_boleta }}</td>
+                                    <td>{{ i.vendedor.nombre }}</td>
+                                    <td>{{ i.rut_cliente }}</td>
+                                    <td>{{ i.fecha }}</td>
+                                    <td>{{ i.total }}</td>
+                                    <td>{% if i.estado %}Aprobado{% else %}Cancelado{% endif %}</td>
+                                    <td>
+                                        <a href="{% url 'detalle' i.id %}" class="btn btn-primary"><i class="fa-solid fa-info"></i></a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
                     </div>
                 </div>
-                <button type="submit" class="btn btn-primary mt-3">Agregar Carro</button>
-            </form>
-        </div>
-
-        <div class="row mt-3">
-            <h5 class="h5" style="border-bottom: solid;">En el carro actual</h5>
-            <form action="{% url 'Ventas' %}" method="POST">
-                {% csrf_token %}
-                <div class="col-3">
-                    <label for="rut" class="form-label">Rut Cliente</label>
-                    <input type="text" name="rut" id="rut" class="form-control" maxlength="13" placeholder="Rut cliente">
-                </div>
-                <table class="table mt-3">
+            </div>
+            <div class="col-4" style="border-left: solid;">
+                <table class="table table-striped">
                     <thead>
                         <tr>
-                            <th>Código</th>
+                            <th>Codigo</th>
                             <th>Producto</th>
-                            <th>Cantidad</th>
+                            <th>Stock</th>
                             <th>Precio Unitario</th>
-                            <th>Precio Total</th>
-                            <th>Acción</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {% for i in carrito %}
+                        {% for i in inventario %}
                         <tr>
-                            <td>{{i.producto_id}}</td>
-                            <td>{{i.nombre}}</td>
-                            <td>{{i.cantidad}}</td>
-                            <td>{{i.precio}}</td>
-                            <td>{{i.subtotal}}</td>
-                            <td>
-                                <a href="#" class="btn btn-danger">
-                                    <i class="fa-regular fa-trash-can"></i>
-                                </a>
-                            </td>
+                            <td>{{ i.producto.id }}</td>
+                            <td>{{ i.nombre }}</td>
+                            <td>{{ i.stock_actual }}</td>
+                            <td>{{ i.producto.precio_unitario|floatformat:0 }}</td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="4" class="text-center">No hay productos disponibles.</td>
                         </tr>
                         {% endfor %}
-                    </tbody>
-                </table>
-                <button type="submit" class="btn btn-primary mt-3">Confirmar Compra</button>
-            </form>
-        </div>
-
-        <div class="row mt-3">
-            <h4 class="h4" style="border-bottom: solid;">Historial de Ventas</h4>
-            <div class="col mt-3">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Nro</th>
-                            <th>Productos</th>
-                            <th>Precio</th>
-                            <th>Acción</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!-- Iterar productos en BD -->
                     </tbody>
                 </table>
             </div>

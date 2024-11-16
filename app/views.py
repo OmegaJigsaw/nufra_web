@@ -83,7 +83,7 @@ def RenderLogin(request):
                     if user.rol.id == 1:
                         return redirect('AdminHome')
                     elif user.rol.id == 2:
-                        return redirect('VenHome')
+                        return redirect('Ventas')
                     elif user.rol.id == 3:
                         return redirect('SupHome')
                 else:
@@ -746,19 +746,18 @@ def RenderSupHome(request):
 def RenderPanel(request):
     return render(request, 'supervisor/panel.html')
 
-@supervisor_required
+@admin_required
 def RenderSupInventario(request):
     inventario = Inventario.objects.all()
-    return render(request, 'supervisor/inventario.html', {'inventario': inventario})
+    return render(request, 'admin/inventario/inventario.html', {'inventario': inventario})
 
-@supervisor_required
+@admin_required
 def AddInventario(request):
     productos = Producto.objects.all()
     has_error = {}
     if request.method == 'POST':
         producto_id = request.POST.get('producto')
         stock = request.POST.get('stock_actual')
-        descripcion = request.POST.get('descripcion')
         fecha = request.POST.get('fecha_actualizacion')
 
     # Validaciones
@@ -770,9 +769,6 @@ def AddInventario(request):
         elif not stock.isdigit() or int(stock) < 0:
             has_error['stock_invalid'] = "El stock debe ser un número positivo."
 
-        if not descripcion:
-            has_error['descripcion_empty'] = "La descripción no puede estar vacía."
-
         if not fecha:
             has_error['fecha_empty'] = "La fecha de actualización es obligatoria."
         else:
@@ -783,22 +779,29 @@ def AddInventario(request):
             except ValueError:
                 has_error['invalid_date'] = 'Fecha Ingresada Invalida'
         
+        if Inventario.objects.filter(producto_id=producto_id).exists():
+            has_error['duplicate'] = "Ya existe un inventario para este producto."
+
         if not has_error:
             producto = Producto.objects.get(id=producto_id)
             nuevo_inventario = Inventario(
                 producto=producto,
                 nombre=producto.nombre,
                 stock_actual=int(stock),
-                descripcion=descripcion,
                 fecha_actualizacion=fecha
             )
             nuevo_inventario.save()
             return redirect('SupInvent') 
+        else:
+            return render(request, 'admin/inventario/addInventario.html', {
+                'productos': productos,
+                'errores': has_error,
+            })
     
     elif request.method == 'GET':
-        return render(request, 'supervisor/inventario/addInventario.html', {'productos': productos,})
+        return render(request, 'admin/inventario/addInventario.html', {'productos': productos,})
 
-@supervisor_required
+@admin_required
 def EditInventario(request, id):
     inventario = get_object_or_404(Inventario, id=id)  # Obtener el inventario a editar
     productos = Producto.objects.all()  # Obtener todos los productos disponibles
@@ -820,9 +823,6 @@ def EditInventario(request, id):
         elif not stock.isdigit() or int(stock) < 0:
             has_error['stock_invalid'] = "El stock debe ser un número positivo."
 
-        if not descripcion:
-            has_error['descripcion_empty'] = "La descripción no puede estar vacía."
-
         if not fecha:
             has_error['fecha_empty'] = "La fecha de actualización es obligatoria."
         else:
@@ -839,14 +839,13 @@ def EditInventario(request, id):
             inventario.producto = producto
             inventario.nombre = producto.nombre
             inventario.stock_actual = int(stock)
-            inventario.descripcion = descripcion
             inventario.fecha_actualizacion = fecha
             inventario.save()
 
-            return redirect('SupInvent')  # Redirige a la vista de inventarios
+            return redirect('SupInvent')
 
         # Si hay errores, renderizar el formulario con los errores
-        return render(request, 'supervisor/inventario/addInventario.html', {
+        return render(request, 'admin/inventario/addInventario.html', {
             'productos': productos,
             'inventario': inventario,
             'errores': has_error
@@ -854,7 +853,7 @@ def EditInventario(request, id):
 
     elif request.method == 'GET':
         # Si es una solicitud GET, renderizar el formulario con los datos del inventario
-        return render(request, 'supervisor/inventario/addInventario.html', {
+        return render(request, 'admin/inventario/addInventario.html', {
             'productos': productos,
             'inventario': inventario
         })
@@ -872,8 +871,14 @@ def RenderVenHome(request):
 @vendedor_required
 def AgregarCarrito(request):
     has_error = {}
+    inventario_actual = Inventario.objects.all()
+    carrito = request.session.get('carrito', [])
     if request.method == 'POST':
         codigo = request.POST.get('codigo')
+
+        if not codigo.isnumeric():
+            has_error['incorrect_code'] = 'Codigo Incorrecto'
+
         try:
             cantidad_str = request.POST.get('cantidad')
             cantidad = int(cantidad_str)
@@ -890,7 +895,6 @@ def AgregarCarrito(request):
             has_error['inventario_404'] = 'Inventario no Disponible para este Producto'
 
         if not has_error:
-            carrito = request.session.get('carrito', [])
             carrito.append({
                 'producto_id': producto.id,
                 'nombre': producto.nombre,
@@ -899,9 +903,16 @@ def AgregarCarrito(request):
                 'subtotal': producto.precio_unitario * cantidad,
             })
             request.session['carrito'] = carrito
-            return render(request, 'vendedor/ventas.html', {'carrito': carrito})
+            return redirect('Ventas')
         else:
-            return render(request, 'vendedor/ventas.html', {'errores': has_error})
+            return render(request, 'vendedor/ventas.html', {'carrito': carrito, 'errores': has_error, 'inventario': inventario_actual})
+
+@vendedor_required
+def DeleteItemCarro(request, id):
+    carrito = request.session.get('carrito', [])
+    carrito = [item for item in carrito if item['producto_id'] != id]
+    request.session['carrito'] = carrito
+    return redirect('Ventas') 
 
 @vendedor_required
 def RenderVentas(request):
@@ -911,6 +922,8 @@ def RenderVentas(request):
     if request.method == 'POST':
         # VALIDAR RUT (REAL)
         rut_cliente = request.POST.get('rut')
+        if not rut_cliente or rut_cliente == "":
+            has_error['rut_vacio'] = 'El RUT no puede estar Vacio'
 
         if not carrito:
             has_error['carrito_empty'] = 'El Carrito no Puede Estar Vacio'
@@ -955,8 +968,20 @@ def RenderVentas(request):
             request.session['carrito'] = []
             return redirect('Ventas') 
         else:
-            return render(request, 'vendedor/ventas.html', {'errores': has_error})
+            ventas = Venta.objects.all()
+            inventario_actual = Inventario.objects.all()
+            return render(request, 'vendedor/ventas.html', {'errores': has_error, 'ventas': ventas, 'carrito': carrito , 'inventario': inventario_actual})
 
     elif request.method == 'GET':
-        return render(request, 'vendedor/ventas.html')
+        inventario_actual = Inventario.objects.all()
+        ventas = Venta.objects.all()
+        return render(request, 'vendedor/ventas.html', {'ventas': ventas, 'inventario':inventario_actual, 'carrito': carrito})
     
+@vendedor_required
+def RenderDetalle(request, id):
+    venta = Venta.objects.get(id=id)
+    detalles = DetalleVenta.objects.filter(venta=venta) 
+    return render(request, 'vendedor/detalle.html', {
+        'venta': venta,
+        'detalle': detalles
+    })

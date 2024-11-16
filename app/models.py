@@ -63,7 +63,6 @@ class Inventario(models.Model):
     producto = models.ForeignKey(Producto, on_delete=models.DO_NOTHING)
     nombre = models.CharField(max_length=150)
     stock_actual = models.IntegerField()
-    descripcion = models.TextField()
     fecha_actualizacion = models.DateField()
     estado = models.CharField(max_length=30, default='Disponible')
 
@@ -78,7 +77,8 @@ class Venta(models.Model):
     nro_boleta = models.IntegerField(unique=True)
     rut_cliente = models.CharField(max_length=13)
     fecha = models.DateField()
-    total = models.FloatField()
+    total = models.FloatField(default=0)
+    estado = models.BooleanField(default=True)
 
     def save(self, *args, **kwargs):
         """ Sobreescribir el Metodo Save para que el nro_boleta sea auto-incrementable"""
