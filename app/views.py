@@ -23,14 +23,18 @@ def admin_required(view_func):
     return wrapper
 
 def vendedor_required(view_func):
+    """Función decoradora que asegura que el usuario tenga rol de Vendedor."""
     def wrapper(request, *args, **kwargs):
+        """Wrapper protector que valida el rol de vendedor antes de permitir el acceso."""
         if request.session.get('user_id') and request.session.get('rol_id') == '2':  # '2' para rol de vendedor
             return view_func(request, *args, **kwargs)
         return redirect('Login')
     return wrapper
 
 def supervisor_required(view_func):
+    """Función decoradora que asegura que el usuario tenga rol de Supervisor."""
     def wrapper(request, *args, **kwargs):
+        """Wrapper protector que valida el rol de Supervisor antes de permitir el acceso."""
         if request.session.get('user_id') and request.session.get('rol_id') == '3':  # '3' para rol de supervisor
             return view_func(request, *args, **kwargs)
         return redirect('Login')
@@ -97,6 +101,7 @@ def RenderLogin(request):
 
 @admin_required
 def RenderRegister(request):
+    """Funcion que renderiza el registro de usuarios"""
     roles = Roles.objects.all()
     vendedores = Vendedor.objects.all()
     supervisores = Supervisor.objects.all()
@@ -243,9 +248,11 @@ def RenderRegister(request):
 
 # Usuario General
 def RenderUserHome(request):
+    """Funcion que renderiza el home de la pagina"""
     return render(request, 'usuario/indexUser.html')
 
 def RenderUserCatalog(request):
+    """Funcion que renderiza el catalogo"""
     if request.method == 'GET':
         # Filtros para visualizar solo las categorias con productos 
         categorias_con_productos = CategoriaProducto.objects.filter(producto__isnull=False).distinct()
@@ -254,39 +261,47 @@ def RenderUserCatalog(request):
         return render(request, 'usuario/catalog.html', {'categorias': categorias_con_productos, 'productos': productos})
 
 def RenderAbout(request):
+    """Funcion que renderiza el acerca de la pagina"""
     return render(request, 'usuario/about.html')
 
 def RenderFAQ(request):
+    """Funcion que renderiza las preguntas frecuentes"""
     return render(request, 'usuario/faq.html')
 
 # Admin
 @admin_required
 def RenderAdminHome(request):
+    """Funcion que renderiza el inicio del admin"""
     return render(request, 'admin/views/indexAdmin.html')
 
 @admin_required
 def RenderTrabajadores(request):
+    """Funcion que renderiza el apartado de trabajadores del admin"""
     return render(request, 'admin/views/trabajadores.html')
 
 @admin_required
 def RenderReport(request):
+    """Funcion que renderiza los reportes"""
     # FALTA CONCRETAR LOS REPORTES (QUE SE MANDA Y COMO DEPENDIENDO DE CADA TIPO)
     return render(request, 'admin/views/reportes.html')
 
 @admin_required
 def RenderConfig(request):
+    """Funcion que renderiza las configuracinoes del admin"""
     if request.method == 'GET':
         return render(request, 'admin/views/configTienda.html')
 
 # Proveedores
 @admin_required
 def RenderProveedores(request):
+    """Funcion que renderiza los proveedores"""
     proveedores = Proveedor.objects.all()
     if request.method == 'GET':
         return render(request, 'admin/proveedores/proveedores.html', {'proveedores': proveedores})
 
 @admin_required
 def AddProveedor(request):
+    """Funcion que agrega proveedores"""
     if request.method == 'POST':
         has_error = {}
         chars_restringidos_correo = [
@@ -358,6 +373,7 @@ def AddProveedor(request):
 
 @admin_required
 def EditProveedor(request, id):
+    """Funcion que permite editar a los proveedores"""
     proveedor = get_object_or_404(Proveedor, id=id)
     if request.method == 'POST':
         has_error = {}
@@ -439,6 +455,7 @@ def EditProveedor(request, id):
 
 @admin_required
 def BlockProveedor(request, id):
+    """Funcion que permite el bloqueo de proveedores"""
     if request.method == 'GET':
         proveedor = get_object_or_404(Proveedor, id=id)
         if proveedor.disponible:
@@ -460,6 +477,7 @@ def BlockProveedor(request, id):
 # Categorias
 @admin_required
 def RenderCategorias(request):
+    """Funcion que renderiza el template de categorias y permite agregar categorias"""
     categorias = CategoriaProducto.objects.all()
     if request.method == 'POST':
         has_error = {}
@@ -484,6 +502,7 @@ def RenderCategorias(request):
 
 @admin_required
 def EditCategoria(request, id):
+    """Funcion que renderiza el catalogo"""
     categorias = CategoriaProducto.objects.all()
     categoria = get_object_or_404(CategoriaProducto, id=id)
 
@@ -518,6 +537,7 @@ def EditCategoria(request, id):
 
 @admin_required 
 def BlockCategoria(request, id):
+    """Funcion que permite bloquear categorias"""
     if request.method == 'GET':
         categoria = CategoriaProducto.objects.get(id=id)
         if categoria.disponible:
@@ -537,12 +557,14 @@ def BlockCategoria(request, id):
 
 @admin_required
 def RenderProducto(request):
+    """Funcion que renderiza el template de productos"""
     productos = Producto.objects.all()
     if request.method == 'GET':
         return render(request, 'admin/productos/productos.html', {'productos': productos})
 
 @admin_required 
 def AddProducto(request):
+    """Funcion que permite añadir productos"""
     categorias = CategoriaProducto.objects.all()
     proveedores = Proveedor.objects.all()
     if request.method == 'POST':
@@ -625,6 +647,7 @@ def AddProducto(request):
 
 @admin_required
 def EditProducto(request, id):
+    """Funcion que permite editar productos"""
     producto = get_object_or_404(Producto, id=id)
     categorias = CategoriaProducto.objects.all()
     proveedores = Proveedor.objects.all()
@@ -720,6 +743,7 @@ def EditProducto(request, id):
 # Manejo de Producto / Para no eliminar registros
 @admin_required
 def BlockProducto(request, id):
+    """Funcion que permite bloquear un producto"""
     if request.method == 'GET':
         producto = Producto.objects.get(id=id)
         if producto.disponible:
@@ -740,19 +764,23 @@ def BlockProducto(request, id):
 # Supervisor
 @supervisor_required
 def RenderSupHome(request):
+    """Funcion que renderiza el template de inicio del supervisor"""
     return render(request, 'supervisor/indexSuper.html')
 
 @supervisor_required
 def RenderPanel(request):
+    """Funcion que renderiza el panel del supervisor"""
     return render(request, 'supervisor/panel.html')
 
 @admin_required
 def RenderSupInventario(request):
+    """Funcion que renderiza el inventario"""
     inventario = Inventario.objects.all()
     return render(request, 'admin/inventario/inventario.html', {'inventario': inventario})
 
 @admin_required
 def AddInventario(request):
+    """Funcion que permite agregar objetos de clase producto al inventario"""
     productos = Producto.objects.all()
     has_error = {}
     if request.method == 'POST':
@@ -803,6 +831,7 @@ def AddInventario(request):
 
 @admin_required
 def EditInventario(request, id):
+    """Funcion que permite editar los elementos en inventario"""
     inventario = get_object_or_404(Inventario, id=id)  # Obtener el inventario a editar
     productos = Producto.objects.all()  # Obtener todos los productos disponibles
     has_error = {}
@@ -860,16 +889,19 @@ def EditInventario(request, id):
 
 @supervisor_required
 def RenderSupPersonal(request):
+    """Funcion que renderiza el template de personal"""
     return render(request, 'supervisor/personal.html')
 
 # Vendedor
 @vendedor_required
 def RenderVenHome(request):
+    """Funcion que renderiza home de vendedor"""
     inventario = Inventario.objects.all()
     return render(request, 'vendedor/indexVendedor.html', {'inventario': inventario})
 
 @vendedor_required
 def AgregarCarrito(request):
+    """Funcion que agrega al carro del vendedor"""
     has_error = {}
     inventario_actual = Inventario.objects.all()
     carrito = request.session.get('carrito', [])
@@ -909,6 +941,7 @@ def AgregarCarrito(request):
 
 @vendedor_required
 def DeleteItemCarro(request, id):
+    """Funcion que elimina un item del carro del vendedor"""
     carrito = request.session.get('carrito', [])
     carrito = [item for item in carrito if item['producto_id'] != id]
     request.session['carrito'] = carrito
@@ -916,6 +949,7 @@ def DeleteItemCarro(request, id):
 
 @vendedor_required
 def RenderVentas(request):
+    """Funcion que renderiza el template de ventas y permite ejecutarlas"""
     has_error = {}
     carrito = request.session.get('carrito', [])
     total = sum(item['subtotal'] for item in carrito)
@@ -979,6 +1013,7 @@ def RenderVentas(request):
     
 @vendedor_required
 def RenderDetalle(request, id):
+    """Funcion que renderiza los detalles de venta"""
     venta = Venta.objects.get(id=id)
     detalles = DetalleVenta.objects.filter(venta=venta) 
     return render(request, 'vendedor/detalle.html', {
